@@ -62,6 +62,15 @@
             cursor: pointer;
         }
 
+        #stopNextBtn {
+            font-size: 1.4em;
+            padding: 15px 30px;
+            background-color: var(--highlight);
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
         .sidebar {
             min-width: 180px;
         }
@@ -102,8 +111,8 @@
     <h2 id="player">Spieler 1</h2>
     <div class="time" id="display">01:00.00</div>
     <div class="buttons">
-        <button onclick="startTimer()">Start</button>
-        <button onclick="stopAndNext()">Stopp & Weiter</button>
+        <button id="startBtn" onclick="handleStartReset()">Start</button>
+        <button id="stopNextBtn" onclick="stopAndNext()">Stopp & Weiter</button>
         <button onclick="togglePause()">Pause/Resume</button>
     </div>
 </div>
@@ -116,11 +125,17 @@
 </div>
 
 <script>
-    let times = [60000, 60000, 60000, 60000]; // in Millisekunden (1 Minute)
+    let times = [60000, 60000, 60000, 60000];
+    const defaultTime = 60000;
     let currentPlayer = 0;
     let interval = null;
     let lastTimestamp = null;
     let isPaused = false;
+    let gameStarted = false;
+
+    const display = document.getElementById("display");
+    const playerLabel = document.getElementById("player");
+    const startBtn = document.getElementById("startBtn");
 
     function formatTime(ms, withMillis = false) {
         const totalSeconds = Math.floor(ms / 1000);
@@ -133,8 +148,8 @@
     }
 
     function updateDisplays() {
-        document.getElementById("display").textContent = formatTime(times[currentPlayer], true);
-        document.getElementById("player").textContent = `Spieler ${currentPlayer + 1}`;
+        display.textContent = formatTime(times[currentPlayer], true);
+        playerLabel.textContent = `Spieler ${currentPlayer + 1}`;
 
         for (let i = 0; i < 4; i++) {
             document.getElementById("t" + i).textContent = formatTime(times[i], false);
@@ -194,6 +209,27 @@
 
     function toggleDarkMode() {
         document.body.classList.toggle("dark");
+    }
+
+    function handleStartReset() {
+        if (!gameStarted) {
+            gameStarted = true;
+            startBtn.textContent = "Zurücksetzen";
+            startTimer();
+        } else {
+            resetGame();
+        }
+    }
+
+    function resetGame() {
+        clearInterval(interval);
+        interval = null;
+        isPaused = false;
+        gameStarted = false;
+        startBtn.textContent = "Start";
+        times = [defaultTime, defaultTime, defaultTime, defaultTime];
+        currentPlayer = 0;
+        updateDisplays();
     }
 
     updateDisplays();
