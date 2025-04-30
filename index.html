@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Vier-Spieler-Schachuhr</title>
     <style>
         :root {
@@ -20,7 +20,6 @@
             --card: #1e1e1e;
             --border: #333;
             --highlight: #4dabf7;
-            --start-green: #28a745;
         }
 
         body {
@@ -153,7 +152,16 @@
                 font-size: 2.8em;
             }
 
-            #stopNextBtn,
+            #stopNextBtn {
+                font-size: 2em;
+                padding: 24px 32px;
+                background-color: var(--highlight);
+                color: white;
+                width: 100%;
+                max-width: 100%;
+                margin-bottom: 12px;
+            }
+
             #pauseBtn,
             #resetBtnIcon,
             #startResetBtn {
@@ -226,7 +234,6 @@
     function updateDisplays() {
         display.textContent = formatTime(times[currentPlayer], true);
         playerLabel.textContent = `Spieler ${currentPlayer + 1}`;
-
         for (let i = 0; i < 4; i++) {
             document.getElementById("t" + i).textContent = formatTime(times[i], false);
             document.getElementById("side" + i).classList.toggle("active", i === currentPlayer);
@@ -240,7 +247,6 @@
         lastTimestamp = performance.now();
         interval = setInterval(() => {
             if (isPaused) return;
-
             const now = performance.now();
             const delta = now - lastTimestamp;
             lastTimestamp = now;
@@ -280,7 +286,6 @@
                 return;
             }
         } while (times[currentPlayer] <= 0);
-
         updateDisplays();
         startTimer();
     }
