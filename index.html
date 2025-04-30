@@ -2,6 +2,7 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vier-Spieler-Schachuhr</title>
     <style>
         :root {
@@ -124,6 +125,52 @@
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+                align-items: center;
+                padding: 20px;
+            }
+
+            .main, .sidebar {
+                width: 90%;
+                margin: 10px 0;
+            }
+
+            .main {
+                padding: 20px;
+            }
+
+            .sidebar {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .time {
+                font-size: 2.8em;
+            }
+
+            #stopNextBtn,
+            #pauseBtn,
+            #resetBtnIcon,
+            #startResetBtn {
+                width: 100%;
+                font-size: 1.6em;
+                padding: 18px;
+                margin: 8px 0;
+            }
+
+            .button-group {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .player-time {
+                font-size: 1.1em;
+            }
         }
     </style>
 </head>
