@@ -4,18 +4,36 @@
     <meta charset="UTF-8">
     <title>Vier-Spieler-Schachuhr</title>
     <style>
+        :root {
+            --bg: #f5f5f5;
+            --text: #000;
+            --card: #fff;
+            --border: #ccc;
+            --highlight: #007bff;
+        }
+
+        body.dark {
+            --bg: #121212;
+            --text: #fff;
+            --card: #1e1e1e;
+            --border: #333;
+            --highlight: #4dabf7;
+        }
+
         body {
             font-family: sans-serif;
-            background-color: #f5f5f5;
+            background-color: var(--bg);
+            color: var(--text);
             display: flex;
             justify-content: center;
             align-items: flex-start;
             padding: 40px;
+            transition: background-color 0.3s, color 0.3s;
         }
 
         .main {
-            background: white;
-            border: 2px solid #333;
+            background: var(--card);
+            border: 2px solid var(--border);
             border-radius: 10px;
             padding: 30px;
             text-align: center;
@@ -23,13 +41,14 @@
             margin-right: 40px;
         }
 
-        h1 {
-            margin-bottom: 20px;
+        h2 {
+            margin-bottom: 10px;
         }
 
         .time {
             font-size: 3em;
             margin: 10px 0;
+            font-variant-numeric: tabular-nums;
         }
 
         .buttons {
@@ -37,9 +56,9 @@
         }
 
         button {
-            font-size: 1.2em;
+            font-size: 1.1em;
             padding: 10px 20px;
-            margin: 0 10px;
+            margin: 6px;
             cursor: pointer;
         }
 
@@ -48,29 +67,44 @@
         }
 
         .player-time {
-            background: #fff;
-            border: 1px solid #ccc;
-            border-left: 5px solid #333;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-left: 5px solid var(--border);
             padding: 10px;
             margin-bottom: 10px;
             border-radius: 5px;
+            transition: background-color 0.3s, border-color 0.3s;
         }
 
         .player-time.active {
-            border-left-color: #007bff;
-            background-color: #e6f0ff;
+            border-left-color: var(--highlight);
+            background-color: rgba(0, 123, 255, 0.1);
             font-weight: bold;
+        }
+
+        .top-controls {
+            margin-bottom: 20px;
+            text-align: right;
+        }
+
+        .toggle {
+            padding: 6px 12px;
+            font-size: 0.9em;
         }
     </style>
 </head>
 <body>
 
 <div class="main">
+    <div class="top-controls">
+        <button class="toggle" onclick="toggleDarkMode()">🌙 Dark Mode</button>
+    </div>
     <h2 id="player">Spieler 1</h2>
-    <div class="time" id="display">01:00</div>
+    <div class="time" id="display">01:00.00</div>
     <div class="buttons">
         <button onclick="startTimer()">Start</button>
         <button onclick="stopAndNext()">Stopp & Weiter</button>
+        <button onclick="togglePause()">Pause/Resume</button>
     </div>
 </div>
 
@@ -82,47 +116,65 @@
 </div>
 
 <script>
-    let times = [60, 60, 60, 60]; // 1 Minute je Spieler
+    let times = [60000, 60000, 60000, 60000]; // in Millisekunden (1 Minute)
     let currentPlayer = 0;
     let interval = null;
+    let lastTimestamp = null;
+    let isPaused = false;
 
-    function formatTime(s) {
-        const m = Math.floor(s / 60);
-        const sec = s % 60;
-        return `${m.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+    function formatTime(ms, withMillis = false) {
+        const totalSeconds = Math.floor(ms / 1000);
+        const minutes = Math.floor(totalSeconds / 60);
+        const seconds = totalSeconds % 60;
+        const millis = Math.floor((ms % 1000) / 10);
+        return withMillis
+            ? `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}.${String(millis).padStart(2, '0')}`
+            : `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
     }
 
-    function updateAllDisplays() {
+    function updateDisplays() {
+        document.getElementById("display").textContent = formatTime(times[currentPlayer], true);
         document.getElementById("player").textContent = `Spieler ${currentPlayer + 1}`;
-        document.getElementById("display").textContent = formatTime(times[currentPlayer]);
 
         for (let i = 0; i < 4; i++) {
-            document.getElementById("t" + i).textContent = formatTime(times[i]);
+            document.getElementById("t" + i).textContent = formatTime(times[i], false);
             document.getElementById("side" + i).classList.toggle("active", i === currentPlayer);
         }
     }
 
     function startTimer() {
-        if (interval || times[currentPlayer] === 0) return;
+        if (interval || times[currentPlayer] <= 0) return;
 
+        isPaused = false;
+        lastTimestamp = performance.now();
         interval = setInterval(() => {
-            if (times[currentPlayer] > 0) {
-                times[currentPlayer]--;
-                updateAllDisplays();
-            } else {
+            if (isPaused) return;
+
+            const now = performance.now();
+            const delta = now - lastTimestamp;
+            lastTimestamp = now;
+
+            times[currentPlayer] -= delta;
+            if (times[currentPlayer] <= 0) {
+                times[currentPlayer] = 0;
                 clearInterval(interval);
                 interval = null;
-                nextPlayer();
+                updateDisplays();
+                setTimeout(nextPlayer, 500);
+            } else {
+                updateDisplays();
             }
-        }, 1000);
+        }, 10);
     }
 
     function stopAndNext() {
-        if (interval) {
-            clearInterval(interval);
-            interval = null;
-        }
+        clearInterval(interval);
+        interval = null;
         nextPlayer();
+    }
+
+    function togglePause() {
+        isPaused = !isPaused;
     }
 
     function nextPlayer() {
@@ -134,13 +186,17 @@
                 alert("Alle Spieler haben keine Zeit mehr!");
                 return;
             }
-        } while (times[currentPlayer] === 0);
-        updateAllDisplays();
-        startTimer(); // direkt starten
+        } while (times[currentPlayer] <= 0);
+
+        updateDisplays();
+        startTimer();
     }
 
-    // Initialanzeige
-    updateAllDisplays();
+    function toggleDarkMode() {
+        document.body.classList.toggle("dark");
+    }
+
+    updateDisplays();
 </script>
 
 </body>
