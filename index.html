@@ -10,6 +10,7 @@
             --card: #fff;
             --border: #ccc;
             --highlight: #007bff;
+            --start-green: #28a745;
         }
 
         body.dark {
@@ -18,6 +19,7 @@
             --card: #1e1e1e;
             --border: #333;
             --highlight: #4dabf7;
+            --start-green: #28a745;
         }
 
         body {
@@ -39,6 +41,7 @@
             text-align: center;
             box-shadow: 2px 2px 12px rgba(0,0,0,0.2);
             margin-right: 40px;
+            min-width: 300px;
         }
 
         h2 {
@@ -60,6 +63,8 @@
             padding: 10px 20px;
             margin: 6px;
             cursor: pointer;
+            border-radius: 5px;
+            border: none;
         }
 
         #stopNextBtn {
@@ -67,8 +72,22 @@
             padding: 15px 30px;
             background-color: var(--highlight);
             color: white;
-            border: none;
-            border-radius: 5px;
+        }
+
+        #pauseBtn, #resetBtnIcon {
+            font-size: 1.4em;
+            padding: 15px 25px;
+            background-color: var(--highlight);
+            color: white;
+        }
+
+        #startResetBtn.start-only {
+            font-size: 1.4em;
+            padding: 15px 30px;
+            background-color: var(--start-green);
+            color: white;
+            display: inline-block;
+            margin-top: 40px;
         }
 
         .sidebar {
@@ -100,6 +119,12 @@
             padding: 6px 12px;
             font-size: 0.9em;
         }
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
     </style>
 </head>
 <body>
@@ -111,9 +136,14 @@
     <h2 id="player">Spieler 1</h2>
     <div class="time" id="display">01:00.00</div>
     <div class="buttons">
-        <button id="startBtn" onclick="handleStartReset()">Start</button>
-        <button id="stopNextBtn" onclick="stopAndNext()">Stopp & Weiter</button>
-        <button onclick="togglePause()">Pause/Resume</button>
+        <div class="button-group">
+            <button id="startResetBtn" class="start-only" onclick="handleStartReset()">Start</button>
+        </div>
+        <div class="button-group" id="controls" style="display: none;">
+            <button id="stopNextBtn" onclick="stopAndNext()">Stopp & Weiter</button>
+            <button id="pauseBtn" onclick="togglePause()">⏸</button>
+            <button id="resetBtnIcon" onclick="resetGame()">⟲</button>
+        </div>
     </div>
 </div>
 
@@ -135,7 +165,6 @@
 
     const display = document.getElementById("display");
     const playerLabel = document.getElementById("player");
-    const startBtn = document.getElementById("startBtn");
 
     function formatTime(ms, withMillis = false) {
         const totalSeconds = Math.floor(ms / 1000);
@@ -190,6 +219,8 @@
 
     function togglePause() {
         isPaused = !isPaused;
+        const pauseBtn = document.getElementById("pauseBtn");
+        pauseBtn.textContent = isPaused ? "▶" : "⏸";
     }
 
     function nextPlayer() {
@@ -212,12 +243,12 @@
     }
 
     function handleStartReset() {
+        const startResetBtn = document.getElementById("startResetBtn");
         if (!gameStarted) {
             gameStarted = true;
-            startBtn.textContent = "Zurücksetzen";
+            startResetBtn.style.display = "none";
+            document.getElementById("controls").style.display = "flex";
             startTimer();
-        } else {
-            resetGame();
         }
     }
 
@@ -226,14 +257,20 @@
         interval = null;
         isPaused = false;
         gameStarted = false;
-        startBtn.textContent = "Start";
         times = [defaultTime, defaultTime, defaultTime, defaultTime];
         currentPlayer = 0;
         updateDisplays();
+
+        const startResetBtn = document.getElementById("startResetBtn");
+        startResetBtn.textContent = "Start";
+        startResetBtn.classList.add("start-only");
+        startResetBtn.style.display = "inline-block";
+        document.getElementById("controls").style.display = "none";
+
+        document.getElementById("pauseBtn").textContent = "⏸";
     }
 
     updateDisplays();
 </script>
-
 </body>
 </html>
