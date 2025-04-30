@@ -6,42 +6,66 @@
     <style>
         body {
             font-family: sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-top: 50px;
             background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 40px;
         }
-        h1 {
-            margin-bottom: 20px;
-        }
-        .timer-box {
+
+        .main {
             background: white;
             border: 2px solid #333;
             border-radius: 10px;
             padding: 30px;
             text-align: center;
             box-shadow: 2px 2px 12px rgba(0,0,0,0.2);
+            margin-right: 40px;
         }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
         .time {
             font-size: 3em;
             margin: 10px 0;
         }
+
         .buttons {
             margin-top: 20px;
         }
+
         button {
             font-size: 1.2em;
             padding: 10px 20px;
             margin: 0 10px;
             cursor: pointer;
         }
+
+        .sidebar {
+            min-width: 180px;
+        }
+
+        .player-time {
+            background: #fff;
+            border: 1px solid #ccc;
+            border-left: 5px solid #333;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+
+        .player-time.active {
+            border-left-color: #007bff;
+            background-color: #e6f0ff;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
 
-<h1>Vier-Spieler-Schachuhr</h1>
-<div class="timer-box">
+<div class="main">
     <h2 id="player">Spieler 1</h2>
     <div class="time" id="display">01:00</div>
     <div class="buttons">
@@ -50,19 +74,32 @@
     </div>
 </div>
 
+<div class="sidebar">
+    <div id="side0" class="player-time">Spieler 1: <span id="t0">01:00</span></div>
+    <div id="side1" class="player-time">Spieler 2: <span id="t1">01:00</span></div>
+    <div id="side2" class="player-time">Spieler 3: <span id="t2">01:00</span></div>
+    <div id="side3" class="player-time">Spieler 4: <span id="t3">01:00</span></div>
+</div>
+
 <script>
-    let times = [60, 60, 60, 60]; // Jeder Spieler startet mit 60 Sekunden
+    let times = [60, 60, 60, 60]; // 1 Minute je Spieler
     let currentPlayer = 0;
     let interval = null;
 
-    function updateDisplay() {
-        const seconds = times[currentPlayer];
-        const min = Math.floor(seconds / 60);
-        const sec = seconds % 60;
-        document.getElementById("display").textContent =
-            `${min.toString().padStart(2, "0")}:${sec.toString().padStart(2, "0")}`;
-        document.getElementById("player").textContent =
-            `Spieler ${currentPlayer + 1}`;
+    function formatTime(s) {
+        const m = Math.floor(s / 60);
+        const sec = s % 60;
+        return `${m.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+    }
+
+    function updateAllDisplays() {
+        document.getElementById("player").textContent = `Spieler ${currentPlayer + 1}`;
+        document.getElementById("display").textContent = formatTime(times[currentPlayer]);
+
+        for (let i = 0; i < 4; i++) {
+            document.getElementById("t" + i).textContent = formatTime(times[i]);
+            document.getElementById("side" + i).classList.toggle("active", i === currentPlayer);
+        }
     }
 
     function startTimer() {
@@ -71,7 +108,7 @@
         interval = setInterval(() => {
             if (times[currentPlayer] > 0) {
                 times[currentPlayer]--;
-                updateDisplay();
+                updateAllDisplays();
             } else {
                 clearInterval(interval);
                 interval = null;
@@ -98,12 +135,12 @@
                 return;
             }
         } while (times[currentPlayer] === 0);
-        updateDisplay();
-        startTimer(); // automatisch starten
+        updateAllDisplays();
+        startTimer(); // direkt starten
     }
 
-    // Initiale Anzeige
-    updateDisplay();
+    // Initialanzeige
+    updateAllDisplays();
 </script>
 
 </body>
