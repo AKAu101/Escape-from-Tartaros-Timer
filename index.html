@@ -1,34 +1,110 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
-    <title>Timer</title>
+    <meta charset="UTF-8">
+    <title>Vier-Spieler-Schachuhr</title>
     <style>
-        #timer { font-size: 2em; color: red; }
+        body {
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 50px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        .timer-box {
+            background: white;
+            border: 2px solid #333;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 2px 2px 12px rgba(0,0,0,0.2);
+        }
+        .time {
+            font-size: 3em;
+            margin: 10px 0;
+        }
+        .buttons {
+            margin-top: 20px;
+        }
+        button {
+            font-size: 1.2em;
+            padding: 10px 20px;
+            margin: 0 10px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
-<h1>Countdown:</h1>
-<div id="timer">05:00</div>
-<button onclick="startTimer()">Start</button>
+
+<h1>Vier-Spieler-Schachuhr</h1>
+<div class="timer-box">
+    <h2 id="player">Spieler 1</h2>
+    <div class="time" id="display">01:00</div>
+    <div class="buttons">
+        <button onclick="startTimer()">Start</button>
+        <button onclick="stopAndNext()">Stopp & Weiter</button>
+    </div>
+</div>
 
 <script>
+    let times = [60, 60, 60, 60]; // Jeder Spieler startet mit 60 Sekunden
+    let currentPlayer = 0;
+    let interval = null;
+
+    function updateDisplay() {
+        const seconds = times[currentPlayer];
+        const min = Math.floor(seconds / 60);
+        const sec = seconds % 60;
+        document.getElementById("display").textContent =
+            `${min.toString().padStart(2, "0")}:${sec.toString().padStart(2, "0")}`;
+        document.getElementById("player").textContent =
+            `Spieler ${currentPlayer + 1}`;
+    }
+
     function startTimer() {
-        let time = 300; // 5 Minuten in Sekunden
-        const timerElement = document.getElementById("timer");
+        if (interval || times[currentPlayer] === 0) return;
 
-        const interval = setInterval(() => {
-            const minutes = Math.floor(time / 60);
-            const seconds = time % 60;
-            timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-
-            if (time <= 0) {
-                clearInterval(interval);
-                timerElement.textContent = "Fertig!";
+        interval = setInterval(() => {
+            if (times[currentPlayer] > 0) {
+                times[currentPlayer]--;
+                updateDisplay();
             } else {
-                time--;
+                clearInterval(interval);
+                interval = null;
+                nextPlayer();
             }
         }, 1000);
     }
+
+    function stopAndNext() {
+        if (interval) {
+            clearInterval(interval);
+            interval = null;
+        }
+        nextPlayer();
+    }
+
+    function nextPlayer() {
+        let attempts = 0;
+        do {
+            currentPlayer = (currentPlayer + 1) % 4;
+            attempts++;
+            if (attempts > 4) {
+                alert("Alle Spieler haben keine Zeit mehr!");
+                return;
+            }
+        } while (times[currentPlayer] === 0);
+        updateDisplay();
+        startTimer(); // automatisch starten
+    }
+
+    // Initiale Anzeige
+    updateDisplay();
 </script>
+
 </body>
 </html>
