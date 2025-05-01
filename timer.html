@@ -54,16 +54,18 @@
 
         .buttons {
             margin-top: 20px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
         }
 
-        button {
-            font-size: 1.2em;
-            padding: 16px 24px;
-            margin: 8px;
-            border-radius: 8px;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.2s ease;
+        .button-group {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+            width: 100%;
         }
 
         #stopNextBtn {
@@ -72,6 +74,35 @@
             background-color: var(--highlight);
             color: white;
             width: 100%;
+            max-width: 400px;
+        }
+
+        #pauseBtn, #resetBtnIcon {
+            background-color: var(--highlight);
+            color: white;
+            font-size: 1.5em;
+            width: 48%;
+            max-width: 180px;
+        }
+
+        #startResetBtn.start-only {
+            font-size: 2em;
+            padding: 20px 30px;
+            background-color: var(--start-green);
+            color: white;
+            margin-top: 30px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        @media (min-width: 768px) {
+            .button-group {
+                justify-content: center;
+            }
+
+            #stopNextBtn, #pauseBtn, #resetBtnIcon {
+                width: auto;
+            }
         }
 
         #pauseBtn, #resetBtnIcon {
@@ -264,7 +295,7 @@
     function togglePause() {
         isPaused = !isPaused;
         const pauseBtn = document.getElementById("pauseBtn");
-        pauseBtn.textContent = isPaused ? "▶" : "⏸";
+        pauseBtn.textContent = isPaused ? "▶" : "❚❚";
     }
 
     function nextPlayer() {
