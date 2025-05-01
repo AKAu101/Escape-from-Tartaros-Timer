@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Vier-Spieler-Schachuhr</title>
+    <style>
+        :root {
+            --bg: #f5f5f5;
+            --text: #000;
+            --card: #fff;
+            --border: #ccc;
+            --highlight: #007bff;
+            --start-green: #28a745;
+        }
+
+        body.dark {
+            --bg: #121212;
+            --text: #fff;
+            --card: #1e1e1e;
+            --border: #333;
+            --highlight: #4dabf7;
+        }
+
+        body {
+            font-family: sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 40px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .main {
+            background: var(--card);
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 2px 2px 12px rgba(0,0,0,0.2);
+            margin-right: 40px;
+            min-width: 300px;
+        }
+
+        h2 {
+            margin-bottom: 10px;
+        }
+
+        .time {
+            font-size: 3em;
+            margin: 10px 0;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .buttons {
+            margin-top: 20px;
+        }
+
+        button {
+            font-size: 1.1em;
+            padding: 10px 20px;
+            margin: 6px;
+            cursor: pointer;
+            border-radius: 5px;
+            border: none;
+        }
+
+        #stopNextBtn {
+            font-size: 1.4em;
+            padding: 15px 30px;
+            background-color: var(--highlight);
+            color: white;
+        }
+
+        #pauseBtn, #resetBtnIcon {
+            font-size: 1.4em;
+            padding: 15px 25px;
+            background-color: var(--highlight);
+            color: white;
+        }
+
+        #startResetBtn.start-only {
+            font-size: 1.4em;
+            padding: 15px 30px;
+            background-color: var(--start-green);
+            color: white;
+            display: inline-block;
+            margin-top: 40px;
+        }
+
+        .sidebar {
+            min-width: 180px;
+        }
+
+        .player-time {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-left: 5px solid var(--border);
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        .player-time.active {
+            border-left-color: var(--highlight);
+            background-color: rgba(0, 123, 255, 0.1);
+            font-weight: bold;
+        }
+
+        .top-controls {
+            margin-bottom: 20px;
+            text-align: right;
+        }
+
+        .toggle {
+            padding: 6px 12px;
+            font-size: 0.9em;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+                align-items: center;
+                padding: 20px;
+            }
+
+            .main, .sidebar {
+                width: 90%;
+                margin: 10px 0;
+            }
+
+            .main {
+                padding: 20px;
+            }
+
+            .sidebar {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .time {
+                font-size: 2.8em;
+            }
+
+            #stopNextBtn {
+                font-size: 2em;
+                padding: 24px 32px;
+                background-color: var(--highlight);
+                color: white;
+                width: 100%;
+                max-width: 100%;
+                margin-bottom: 12px;
+            }
+
+            #pauseBtn,
+            #resetBtnIcon,
+            #startResetBtn {
+                width: 100%;
+                font-size: 1.6em;
+                padding: 18px;
+                margin: 8px 0;
+            }
+
+            .button-group {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .player-time {
+                font-size: 1.1em;
+            }
+        }
+
+        /* Neuer Button oben links */
+        .back-button {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            background-color: var(--highlight);
+            color: white;
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 1em;
+            z-index: 999;
+            transition: background-color 0.3s;
+        }
+
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Zurück zur Startseite Button mit Haus-Icon -->
+<a href="/index.html" class="back-button">🏠 Startseite</a>
+
+<div class="main">
+    <div class="top-controls">
+        <button class="toggle" onclick="toggleDarkMode()">🌙 Dark Mode</button>
+    </div>
+    <h2 id="player">Spieler 1</h2>
+    <div class="time" id="display">01:00.00</div>
+    <div class="buttons">
+        <div class="button-group">
+            <button id="startResetBtn" class="start-only" onclick="handleStartReset()">Start</button>
+        </div>
+        <div class="button-group" id="controls" style="display: none;">
+            <button id="stopNextBtn" onclick="stopAndNext()">Stopp & Weiter</button>
+            <button id="pauseBtn" onclick="togglePause()">⏸</button>
+            <button id="resetBtnIcon" onclick="resetGame()">⟲</button>
+        </div>
+    </div>
+</div>
+
+<div class="sidebar">
+    <div id="side0" class="player-time">Spieler 1: <span id="t0">01:00</span></div>
+    <div id="side1" class="player-time">Spieler 2: <span id="t1">01:00</span></div>
+    <div id="side2" class="player-time">Spieler 3: <span id="t2">01:00</span></div>
+    <div id="side3" class="player-time">Spieler 4: <span id="t3">01:00</span></div>
+</div>
+
+<script>
+    let times = [60000, 60000, 60000, 60000];
+    const defaultTime = 60000;
+    let currentPlayer = 0;
+    let interval = null;
+    let lastTimestamp = null;
+    let isPaused = false;
+    let gameStarted = false;
+
+    const display = document.getElementById("display");
+    const playerLabel = document.getElementById("player");
+
+    function formatTime(ms, withMillis = false) {
+        const totalSeconds = Math.floor(ms / 1000);
+        const minutes = Math.floor(totalSeconds / 60);
+        const seconds = totalSeconds % 60;
+        const millis = Math.floor((ms % 1000) / 10);
+        return withMillis
+            ? `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}.${String(millis).padStart(2, '0')}`
+            : `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    }
+
+    function updateDisplays() {
+        display.textContent = formatTime(times[currentPlayer], true);
+        playerLabel.textContent = `Spieler ${currentPlayer + 1}`;
+        for (let i = 0; i < 4; i++) {
+            document.getElementById("t" + i).textContent = formatTime(times[i], false);
+            document.getElementById("side" + i).classList.toggle("active", i === currentPlayer);
+        }
+    }
+
+    function startTimer() {
+        if (interval || times[currentPlayer] <= 0) return;
+
+        isPaused = false;
+        lastTimestamp = performance.now();
+        interval = setInterval(() => {
+            if (isPaused) return;
+            const now = performance.now();
+            const delta = now - lastTimestamp;
+            lastTimestamp = now;
+
+            times[currentPlayer] -= delta;
+            if (times[currentPlayer] <= 0) {
+                times[currentPlayer] = 0;
+                clearInterval(interval);
+                interval = null;
+                updateDisplays();
+                setTimeout(nextPlayer, 500);
+            } else {
+                updateDisplays();
+            }
+        }, 10);
+    }
+
+    function stopAndNext() {
+        clearInterval(interval);
+        interval = null;
+        nextPlayer();
+    }
+
+    function togglePause() {
+        isPaused = !isPaused;
+        const pauseBtn = document.getElementById("pauseBtn");
+        pauseBtn.textContent = isPaused ? "▶" : "⏸";
+    }
+
+    function nextPlayer() {
+        let attempts = 0;
+        do {
+            currentPlayer = (currentPlayer + 1) % 4;
+            attempts++;
+            if (attempts > 4) {
+                alert("Alle Spieler haben keine Zeit mehr!");
+                return;
+            }
+        } while (times[currentPlayer] <= 0);
+        updateDisplays();
+        startTimer();
+    }
+
+    function toggleDarkMode() {
+        document.body.classList.toggle("dark");
+    }
+
+    function handleStartReset() {
+        const startResetBtn = document.getElementById("startResetBtn");
+        if (!gameStarted) {
+            gameStarted = true;
+            startResetBtn.style.display = "none";
+            document.getElementById("controls").style.display = "flex";
+            startTimer();
+        }
+    }
+
+    function resetGame() {
+        clearInterval(interval);
+        interval = null;
+        isPaused = false;
+        gameStarted = false;
+        times = [defaultTime, defaultTime, defaultTime, defaultTime];
+        currentPlayer = 0;
+        updateDisplays();
+
+        const startResetBtn = document.getElementById("startResetBtn");
+        startResetBtn.textContent = "Start";
+        startResetBtn.classList.add("start-only");
+        startResetBtn.style.display = "inline-block";
+        document.getElementById("controls").style.display = "none";
+
+        document.getElementById("pauseBtn").textContent = "⏸";
+    }
+
+    updateDisplays();
+</script>
+</body>
+</html>
