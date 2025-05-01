@@ -26,22 +26,20 @@
             font-family: sans-serif;
             background-color: var(--bg);
             color: var(--text);
+            margin: 0;
+            padding: 0;
             display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            padding: 40px;
+            flex-direction: column;
+            align-items: center;
             transition: background-color 0.3s, color 0.3s;
         }
 
         .main {
-            background: var(--card);
-            border: 2px solid var(--border);
-            border-radius: 10px;
-            padding: 30px;
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
+            box-sizing: border-box;
             text-align: center;
-            box-shadow: 2px 2px 12px rgba(0,0,0,0.2);
-            margin-right: 40px;
-            min-width: 300px;
         }
 
         h2 {
@@ -59,159 +57,130 @@
         }
 
         button {
-            font-size: 1.1em;
-            padding: 10px 20px;
-            margin: 6px;
-            cursor: pointer;
-            border-radius: 5px;
+            font-size: 1.2em;
+            padding: 16px 24px;
+            margin: 8px;
+            border-radius: 8px;
             border: none;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
         }
 
         #stopNextBtn {
-            font-size: 1.4em;
-            padding: 15px 30px;
+            font-size: 2em;
+            padding: 20px 30px;
             background-color: var(--highlight);
             color: white;
+            width: 100%;
         }
 
         #pauseBtn, #resetBtnIcon {
-            font-size: 1.4em;
-            padding: 15px 25px;
             background-color: var(--highlight);
             color: white;
+            font-size: 1.5em;
+            width: 48%;
         }
 
         #startResetBtn.start-only {
-            font-size: 1.4em;
-            padding: 15px 30px;
+            font-size: 2em;
+            padding: 20px 30px;
             background-color: var(--start-green);
             color: white;
-            display: inline-block;
-            margin-top: 40px;
+            margin-top: 30px;
+            width: 100%;
         }
 
         .sidebar {
-            min-width: 180px;
+            width: 100%;
+            max-width: 600px;
+            padding: 0 20px;
+            box-sizing: border-box;
         }
 
         .player-time {
             background: var(--card);
             border: 1px solid var(--border);
-            border-left: 5px solid var(--border);
-            padding: 10px;
-            margin-bottom: 10px;
+            padding: 12px;
+            margin: 8px 0;
             border-radius: 5px;
-            transition: background-color 0.3s, border-color 0.3s;
+            font-size: 1.2em;
         }
 
         .player-time.active {
-            border-left-color: var(--highlight);
-            background-color: rgba(0, 123, 255, 0.1);
+            border-left: 6px solid var(--highlight);
             font-weight: bold;
         }
 
         .top-controls {
-            margin-bottom: 20px;
-            text-align: right;
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            padding: 10px 20px;
+            box-sizing: border-box;
         }
 
         .toggle {
-            padding: 6px 12px;
-            font-size: 0.9em;
+            font-size: 1em;
+            padding: 8px 12px;
         }
 
         .button-group {
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
         }
 
-        @media (max-width: 768px) {
-            body {
-                flex-direction: column;
-                align-items: center;
-                padding: 20px;
-            }
-
-            .main, .sidebar {
-                width: 90%;
-                margin: 10px 0;
-            }
-
-            .main {
-                padding: 20px;
-            }
-
-            .sidebar {
-                display: flex;
-                flex-direction: column;
-                gap: 10px;
-            }
-
-            .time {
-                font-size: 2.8em;
-            }
-
-            #stopNextBtn {
-                font-size: 2em;
-                padding: 24px 32px;
-                background-color: var(--highlight);
-                color: white;
-                width: 100%;
-                max-width: 100%;
-                margin-bottom: 12px;
-            }
-
-            #pauseBtn,
-            #resetBtnIcon,
-            #startResetBtn {
-                width: 100%;
-                font-size: 1.6em;
-                padding: 18px;
-                margin: 8px 0;
-            }
-
-            .button-group {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .player-time {
-                font-size: 1.1em;
-            }
-        }
-
-        /* Neuer Button oben links */
         .back-button {
-            position: absolute;
-            top: 16px;
-            left: 16px;
+            position: fixed;
+            top: 10px;
+            left: 10px;
             background-color: var(--highlight);
             color: white;
             text-decoration: none;
-            padding: 8px 14px;
-            border-radius: 6px;
-            font-size: 1em;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 1.2em;
             z-index: 999;
-            transition: background-color 0.3s;
         }
 
         .back-button:hover {
             background-color: #0056b3;
         }
+
+        @media (min-width: 768px) {
+            .main, .sidebar {
+                max-width: 700px;
+            }
+
+            #stopNextBtn {
+                width: auto;
+            }
+
+            .button-group {
+                justify-content: center;
+            }
+
+            #pauseBtn, #resetBtnIcon {
+                width: auto;
+            }
+        }
     </style>
 </head>
 <body>
 
-<!-- Zurück zur Startseite Button mit Haus-Icon -->
-<a href="/index.html" class="back-button">🏠 Startseite</a>
+<!-- Haus-Button -->
+<a href="/index.html" class="back-button">🏠</a>
+
+<div class="top-controls">
+    <button class="toggle" onclick="toggleDarkMode()">🌙 Dark Mode</button>
+</div>
 
 <div class="main">
-    <div class="top-controls">
-        <button class="toggle" onclick="toggleDarkMode()">🌙 Dark Mode</button>
-    </div>
     <h2 id="player">Spieler 1</h2>
     <div class="time" id="display">01:00.00</div>
+
     <div class="buttons">
         <div class="button-group">
             <button id="startResetBtn" class="start-only" onclick="handleStartReset()">Start</button>

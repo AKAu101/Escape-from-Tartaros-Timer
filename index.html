@@ -2,14 +2,20 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Escape from Tartaros</title>
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             margin: 0;
             padding: 0;
             background-image: url('https://upload.wikimedia.org/wikipedia/commons/4/41/Gustave_Dor%C3%A9_-_Dante_Alighieri_-_Inferno_-_Plate_9_%28Canto_III_-_Acheron%29.jpg');
             background-size: cover;
             background-position: center;
+            background-repeat: no-repeat;
             font-family: 'Georgia', serif;
             color: white;
             text-align: center;
@@ -17,22 +23,22 @@
 
         .overlay {
             background: rgba(0, 0, 0, 0.7);
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 5vw;
         }
 
         h1 {
-            font-size: 3em;
-            margin-bottom: 0.5em;
+            font-size: 8vw;
+            margin-bottom: 1em;
             text-shadow: 2px 2px 5px #000;
         }
 
         p {
-            font-size: 1.2em;
+            font-size: 4.5vw;
             max-width: 600px;
             margin-bottom: 2em;
             text-shadow: 1px 1px 3px #000;
@@ -40,7 +46,7 @@
 
         button {
             padding: 1em 2em;
-            font-size: 1.5em;
+            font-size: 5vw;
             background-color: darkred;
             color: white;
             border: none;
@@ -53,6 +59,21 @@
         button:hover {
             background-color: crimson;
             transform: scale(1.05);
+        }
+
+        /* Für größere Bildschirme */
+        @media (min-width: 768px) {
+            h1 {
+                font-size: 3em;
+            }
+
+            p {
+                font-size: 1.2em;
+            }
+
+            button {
+                font-size: 1.5em;
+            }
         }
     </style>
 </head>
