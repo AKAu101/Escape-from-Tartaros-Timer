@@ -6,177 +6,215 @@
   <title>Vier-Spieler-Schachuhr</title>
   <style>
     :root {
-  --bg-color: #f0f0f0;
-  --text-color: #000;
-  --panel-bg: #fff;
-  --highlight: #d0f0d0;
-  --primary: #007bff;
-  --secondary: #0056b3;
-  --shadow: rgba(0,0,0,0.1);
-}
+      --bg-color: #f0f0f0;
+      --text-color: #000;
+      --panel-bg: #fff;
+      --highlight: #d0f0d0;
+      --primary: #007bff;
+      --secondary: #0056b3;
+      --shadow: rgba(0,0,0,0.1);
+    }
 
-body.dark {
-  --bg-color: #1e1e1e;
-  --text-color: #fff;
-  --panel-bg: #2c2c2c;
-  --highlight: #304030;
-  --primary: #3399ff;
-  --secondary: #1e70c1;
-  --shadow: rgba(255,255,255,0.1);
-}
+    body.dark {
+      --bg-color: #1e1e1e;
+      --text-color: #fff;
+      --panel-bg: #2c2c2c;
+      --highlight: #304030;
+      --primary: #3399ff;
+      --secondary: #1e70c1;
+      --shadow: rgba(255,255,255,0.1);
+    }
 
-body {
-  font-family: 'Segoe UI', sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: var(--bg-color);
-  color: var(--text-color);
-}
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+    }
 
-#main {
-  max-width: 800px;
-  margin: 50px auto;
-  padding: 30px 20px;
-  text-align: center;
-  background-color: var(--panel-bg);
-  border-radius: 15px;
-  box-shadow: 0 8px 16px var(--shadow);
-}
+    #main {
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 30px 20px;
+      text-align: center;
+      background-color: var(--panel-bg);
+      border-radius: 15px;
+      box-shadow: 0 8px 16px var(--shadow);
+    }
 
-#display {
-  font-size: 64px;
-  margin: 40px 0 10px;
-  font-weight: bold;
-}
+    #display {
+      font-size: 64px;
+      margin: 40px 0 10px;
+      font-weight: bold;
+    }
 
-#player {
-  font-size: 28px;
-  margin-bottom: 30px;
-}
+    #player {
+      font-size: 28px;
+      margin-bottom: 30px;
+    }
 
-#controls {
-  display: flex;
-  gap: 15px;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-bottom: 30px;
-}
+    #controls {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 30px;
+    }
 
-button {
-  padding: 12px 24px;
-  font-size: 1.1em;
-  cursor: pointer;
-  border-radius: 10px;
-  border: none;
-  transition: background-color 0.2s ease;
-}
+    button {
+      padding: 12px 24px;
+      font-size: 1.1em;
+      cursor: pointer;
+      border-radius: 10px;
+      border: none;
+      transition: background-color 0.2s ease;
+    }
 
-button:hover {
-  filter: brightness(1.1);
-}
+    button:hover {
+      filter: brightness(1.1);
+    }
 
-#nextPlayerBtn, #pauseResumeBtn, #startBtn {
-  width: 80%;
-  max-width: 300px;
-  margin: 10px auto;
-  display: block;
-}
+    #mainButtonContainer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      margin: 20px 0;
+      width: 100%;
+    }
 
-#sidebar {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-top: 20px;
-  align-items: center;
-}
+    #nextPlayerBtn {
+      font-size: 5em;
+      width: 90%;
+      max-width: 700px;
+      padding: 20px;
+      background-color: #dc3545;
+      color: white;
+    }
 
-.player-time {
-  padding: 12px 18px;
-  background-color: var(--panel-bg);
-  border-radius: 8px;
-  width: 80%;
-  max-width: 300px;
-  text-align: center;
-  font-size: 18px;
-  box-shadow: 0 2px 6px var(--shadow);
-}
+    #pauseResumeBtn {
+      font-size: 1.5em;
+      width: 90%;
+      max-width: 700px;
+      padding: 10px;
+      background-color: #ffc107;
+      color: white;
+    }
 
-.player-time.active {
-  background-color: var(--highlight);
-  font-weight: bold;
-}
+    #startBtn {
+      font-size: 5em;
+      padding: 16px 32px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      margin: 20px auto;
+      display: block;
+      width: 90%;
+      max-width: 700px;
+      text-align: center;
+    }
 
-#editMenuToggle {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  background-color: var(--primary);
-  color: white;
-  border-radius: 5px;
-  padding: 12px 16px;
-  z-index: 1001;
-}
+    #startBtn:hover {
+      background-color: #218838;
+    }
 
-#editMenu {
-  position: fixed;
-  top: 70px;
-  right: -220px;
-  width: 200px;
-  background-color: var(--primary);
-  color: white;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 20px;
-  z-index: 1000;
-  border-radius: 10px 0 0 10px;
-  transition: right 0.3s ease;
-}
+    #sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 20px;
+      align-items: center;
+    }
 
-#editMenu.show {
-  right: 0;
-}
+    .player-time {
+      padding: 12px 18px;
+      background-color: var(--panel-bg);
+      border-radius: 8px;
+      width: 80%;
+      max-width: 300px;
+      text-align: center;
+      font-size: 18px;
+      box-shadow: 0 2px 6px var(--shadow);
+    }
 
-#editMenu button {
-  width: 100%;
-  padding: 12px;
-  font-size: 1.1em;
-  background-color: var(--secondary);
-  border-radius: 8px;
-}
+    .player-time.active {
+      background-color: var(--highlight);
+      font-weight: bold;
+    }
 
-#editPanel {
-  display: none;
-  flex-direction: column;
-  gap: 15px;
-  margin-top: 30px;
-}
+    #editMenuToggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: var(--primary);
+      color: white;
+      border-radius: 5px;
+      padding: 12px 16px;
+      z-index: 1001;
+    }
 
-.edit-mode {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background-color: var(--panel-bg);
-  padding: 10px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px var(--shadow);
-  justify-content: center;
-  flex-wrap: wrap;
-}
+    #editMenu {
+      position: fixed;
+      top: 70px;
+      right: -220px;
+      width: 200px;
+      background-color: var(--primary);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 20px;
+      z-index: 1000;
+      border-radius: 10px 0 0 10px;
+      transition: right 0.3s ease;
+    }
 
-input[type="number"], input[type="text"] {
-  padding: 6px;
-  font-size: 1em;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-}
+    #editMenu.show {
+      right: 0;
+    }
 
-.edit-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  align-items: center;
-}
+    #editMenu button {
+      width: 100%;
+      padding: 12px;
+      font-size: 1.1em;
+      background-color: var(--secondary);
+      border-radius: 8px;
+    }
+
+    #editPanel {
+      display: none;
+      flex-direction: column;
+      gap: 15px;
+      margin-top: 30px;
+    }
+
+    .edit-mode {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background-color: var(--panel-bg);
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px var(--shadow);
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    input[type="number"], input[type="text"] {
+      padding: 6px;
+      font-size: 1em;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .edit-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: center;
+    }
 
     input[type="number"], input[type="text"] {
       padding: 5px;
@@ -230,32 +268,6 @@ input[type="number"], input[type="text"] {
       background-color: var(--secondary);
       border-radius: 8px;
     }
-
-    #nextPlayerBtn {
-      font-size: 2em;
-      width: 100%;
-      padding: 20px;
-      background-color: #28a745;
-      color: white;
-      margin-top: 20px;
-    }
-
-    #pauseResumeBtn {
-      font-size: 1.5em;
-      width: 100%;
-      padding: 10px;
-      background-color: #ffc107;
-      color: white;
-      margin-top: 10px;
-    }
-
-    #startBtn {
-      font-size: 2em;
-      padding: 20px;
-      background-color: #007bff;
-      color: white;
-      margin-top: 20px;
-    }
   </style>
 </head>
 <body>
@@ -264,8 +276,10 @@ input[type="number"], input[type="text"] {
   <div id="display">00:00.00</div>
   <div id="player">Spieler 1</div>
 
-  <button id="nextPlayerBtn" onclick="stopAndNext()" style="display:none;">⏭️</button>
-  <button id="pauseResumeBtn" onclick="togglePause()" style="display:none;">⏸</button>
+  <div id="mainButtonContainer" style="display:none;">
+    <button id="nextPlayerBtn" onclick="stopAndNext()">⏭️</button>
+    <button id="pauseResumeBtn" onclick="togglePause()">⏸</button>
+  </div>
   <button id="startBtn" onclick="startGame()">Start</button>
 
   <div id="controls" style="display:none;">
@@ -310,8 +324,8 @@ input[type="number"], input[type="text"] {
     const seconds = totalSeconds % 60;
     const millis = Math.floor((ms % 1000) / 10);
     return withMillis
-      ? `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}.${String(millis).padStart(2, '0')}`
-      : `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            ? `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}.${String(millis).padStart(2, '0')}`
+            : `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
   }
 
   function updateDisplays() {
@@ -385,16 +399,14 @@ input[type="number"], input[type="text"] {
     currentPlayer = 0;
     updateDisplays();
     document.getElementById("startBtn").style.display = "inline-block";
-    document.getElementById("pauseResumeBtn").style.display = "none";
-    document.getElementById("nextPlayerBtn").style.display = "none";
+    document.getElementById("mainButtonContainer").style.display = "none";
     pauseBtn.textContent = "⏸";
   }
 
   function startGame() {
     gameStarted = true;
     document.getElementById("startBtn").style.display = "none";
-    document.getElementById("nextPlayerBtn").style.display = "inline-block";
-    document.getElementById("pauseResumeBtn").style.display = "inline-block";
+    document.getElementById("mainButtonContainer").style.display = "flex";
     startTimer();
   }
 
