@@ -4,85 +4,516 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Escape from Tartaros</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=MedievalSharp&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --blood-red: #5e0000;
+            --gold: #d4af37;
+            --bronze: #cd7f32;
+            --marble: #e8e0d0;
+            --shadow: #1a1a1a;
+        }
+
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
-            margin: 0;
-            padding: 0;
-            background-image: url('https://upload.wikimedia.org/wikipedia/commons/4/41/Gustave_Dor%C3%A9_-_Dante_Alighieri_-_Inferno_-_Plate_9_%28Canto_III_-_Acheron%29.jpg');
+            font-family: 'Cinzel Decorative', serif;
+            background-color: #000;
+            color: var(--marble);
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(94, 0, 0, 0.2) 0%, transparent 30%),
+                radial-gradient(circle at 80% 70%, rgba(94, 0, 0, 0.2) 0%, transparent 30%),
+                url('https://images.unsplash.com/photo-1518709766631-a6a7f45921c4?q=80&w=2070&auto=format&fit=crop');
             background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            font-family: 'Georgia', serif;
-            color: white;
-            text-align: center;
+            background-attachment: fixed;
+            line-height: 1.6;
+            overflow-x: hidden;
         }
 
-        .overlay {
-            background: rgba(0, 0, 0, 0.7);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 5vw;
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+        }
+
+        header {
+            text-align: center;
+            padding: 2rem 0;
+            border-bottom: 2px solid var(--blood-red);
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        header::before, header::after {
+            content: "⚔";
+            position: absolute;
+            bottom: -15px;
+            font-size: 1.5rem;
+            color: var(--gold);
+        }
+
+        header::before {
+            left: 20%;
+        }
+
+        header::after {
+            right: 20%;
         }
 
         h1 {
-            font-size: 8vw;
-            margin-bottom: 1em;
-            text-shadow: 2px 2px 5px #000;
+            font-family: 'UnifrakturMaguntia', cursive;
+            font-size: 4.5rem;
+            color: var(--gold);
+            text-shadow: 3px 3px 0 var(--shadow), 6px 6px 10px rgba(0,0,0,0.8);
+            margin-bottom: 1rem;
+            letter-spacing: 3px;
+        }
+
+        h2 {
+            font-family: 'MedievalSharp', cursive;
+            color: var(--bronze);
+            font-size: 2rem;
+            margin: 2rem 0 1rem;
+            border-bottom: 1px solid var(--blood-red);
+            padding-bottom: 0.5rem;
+        }
+
+        .tagline {
+            font-style: italic;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            text-shadow: 1px 1px 2px var(--shadow);
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .game-description {
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid var(--blood-red);
+            padding: 2rem;
+            border-radius: 5px;
+            box-shadow: 0 0 20px rgba(94, 0, 0, 0.5);
+            max-width: 800px;
+            position: relative;
+        }
+
+        .game-description::before {
+            content: "";
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            border: 1px solid var(--gold);
+            border-radius: 8px;
+            opacity: 0.3;
+            pointer-events: none;
         }
 
         p {
-            font-size: 4.5vw;
-            max-width: 600px;
-            margin-bottom: 2em;
-            text-shadow: 1px 1px 3px #000;
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
         }
 
-        button {
-            padding: 1em 2em;
-            font-size: 5vw;
-            background-color: darkred;
-            color: white;
+        .cta-buttons {
+            display: flex;
+            gap: 2rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            font-family: 'MedievalSharp', cursive;
+            font-size: 1.2rem;
+            background: linear-gradient(to bottom, var(--blood-red), #3a0000);
+            color: var(--marble);
             border: none;
-            border-radius: 10px;
+            border-radius: 5px;
             cursor: pointer;
-            box-shadow: 0 0 15px rgba(0,0,0,0.5);
-            transition: transform 0.2s, background-color 0.2s;
+            box-shadow: 0 4px 0 #3a0000, 0 0 10px rgba(212, 175, 55, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            display: inline-block;
         }
 
-        button:hover {
-            background-color: crimson;
-            transform: scale(1.05);
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 0 #3a0000, 0 0 15px rgba(212, 175, 55, 0.5);
         }
 
-        /* Für größere Bildschirme */
-        @media (min-width: 768px) {
+        .btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 0 #3a0000;
+        }
+
+        .btn::after {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                rgba(212, 175, 55, 0) 0%,
+                rgba(212, 175, 55, 0) 30%,
+                rgba(212, 175, 55, 0.1) 45%,
+                rgba(212, 175, 55, 0.5) 50%,
+                rgba(212, 175, 55, 0.1) 55%,
+                rgba(212, 175, 55, 0) 70%,
+                rgba(212, 175, 55, 0) 100%
+            );
+            transform: rotate(30deg);
+            transition: all 0.3s;
+        }
+
+        .btn:hover::after {
+            left: 100%;
+        }
+
+        .btn-gold {
+            background: linear-gradient(to bottom, var(--gold), #b8860b);
+            color: #000;
+            box-shadow: 0 4px 0 #b8860b, 0 0 10px rgba(212, 175, 55, 0.6);
+        }
+
+        .btn-gold:hover {
+            box-shadow: 0 6px 0 #b8860b, 0 0 15px rgba(212, 175, 55, 0.8);
+        }
+
+        .game-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            width: 100%;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid var(--blood-red);
+            padding: 1.5rem;
+            border-radius: 5px;
+            text-align: center;
+            transition: transform 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 15px rgba(94, 0, 0, 0.7);
+        }
+
+        .feature-card h3 {
+            color: var(--gold);
+            margin-bottom: 1rem;
+            font-family: 'MedievalSharp', cursive;
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--bronze);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 4rem;
+            padding: 2rem 0;
+            border-top: 1px solid var(--blood-red);
+            font-size: 0.9rem;
+            color: var(--bronze);
+        }
+
+        .flames {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: linear-gradient(to top, rgba(94, 0, 0, 0.7), transparent);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        @media (max-width: 768px) {
             h1 {
-                font-size: 3em;
+                font-size: 3rem;
             }
+            
+            .game-features {
+                grid-template-columns: 1fr;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
 
-            p {
-                font-size: 1.2em;
-            }
+        /* Modal für Spielanleitung */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 2rem;
+        }
 
-            button {
-                font-size: 1.5em;
-            }
+        .modal-content {
+            background: rgba(0, 0, 0, 0.9);
+            border: 1px solid var(--gold);
+            border-radius: 5px;
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 2rem;
+            position: relative;
+            color: var(--marble);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            color: var(--marble);
+            font-size: 2rem;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close-modal:hover {
+            color: var(--gold);
+        }
+
+        .rules-section {
+            margin-bottom: 2rem;
+        }
+
+        .rules-section h3 {
+            color: var(--gold);
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--blood-red);
+            padding-bottom: 0.5rem;
+        }
+
+        .rules-section ul {
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .rules-section li {
+            margin-bottom: 0.5rem;
         }
     </style>
 </head>
 <body>
-<div class="overlay">
-    <h1>Escape from Tartaros</h1>
-    <p>Tritt ein in die Unterwelt – ein mythologisches Brettspiel voller Prüfungen, Götter und Zeitdruck.<br>
-        Bist du bereit, dem Tartaros zu entkommen?</p>
-    <button onclick="window.location.href='timer.html'">Spiel starten</button>
-</div>
+    <div class="container">
+        <header>
+            <h1>Escape from Tartaros</h1>
+            <p class="tagline">Ein mythologisches Brettspiel voller Prüfungen, Götter und Zeitdruck</p>
+        </header>
+
+        <div class="main-content">
+            <div class="game-description">
+                <h2>Willkommen in der Unterwelt, Sterblicher!</h2>
+                <p>Die Schatten des Tartaros umfangen dich, kalt und undurchdringlich wie ein Grab. Unter deinen Füßen knirschen die Überreste derer, die vor dir gekommen und gescheitert sind. Doch du... du hast das Glück, dass Hades dich bemerkt hat.</p>
+                <p>Der Herr der Toten langweilt sich und gibt dir die Chance, als Gewinner seines Spiels vom Tartaros zu entkommen und die Ewigkeit im Paradies Elysions zu genießen.</p>
+                <p>Drei Ebenen der Unterwelt liegen vor dir, jede gefährlicher als die letzte. Wirst du Hades beeindrucken? Wirst du tricksen, kämpfen oder betteln, um deine Freiheit zu erkaufen? Oder wirst du scheitern und für immer in der Dunkelheit verschwinden?</p>
+                <p>Die Würfel sind gefallen. Die Spiele beginnen.</p>
+                
+                <div class="cta-buttons">
+                    <a href="timer.html" class="btn btn-gold">Spiel starten</a>
+                    <button id="rules-btn" class="btn">Spielanleitung</button>
+                </div>
+            </div>
+
+            <h2>Die Herausforderungen der Unterwelt</h2>
+            <div class="game-features">
+                <div class="feature-card">
+                    <div class="feature-icon">⚔️</div>
+                    <h3>Kampfprüfungen</h3>
+                    <p>Beweise deine Stärke gegen die Schatten der Unterwelt. Symbole in der richtigen Reihenfolge legen und Belohnungen erhalten.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🧩</div>
+                    <h3>Minispiele</h3>
+                    <p>Nach jeder Ebene erwartet dich eine einzigartige Prüfung von Hades selbst. Nur die Geschicktesten werden belohnt.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🗝️</div>
+                    <h3>Items & Artefakte</h3>
+                    <p>Granatäpfel, Ambrosia, Rostige Schlüssel und mächtige Artefakte der Götter stehen dir zur Verfügung - wenn du sie findest.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">⏳</div>
+                    <h3>Zeitdruck</h3>
+                    <p>Die Sanduhr läuft! Erreiche rechtzeitig Charons Boot oder leide unter den Konsequenzen.</p>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2023 Escape from Tartaros - Ein Spiel der Götter für Sterbliche</p>
+        </footer>
+    </div>
+
+    <div class="flames"></div>
+
+    <!-- Modal für Spielanleitung -->
+    <div id="rules-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Spielanleitung: Escape from Tartaros</h2>
+            
+            <div class="rules-section">
+                <h3>Einleitung</h3>
+                <p>Willkommen im Tartaros, Sterbliche! Die Schatten der Unterwelt umfangen euch, kalt und undurchdringlich wie ein Grab. Unter euren Füßen knirschen die Überreste derer, die vor euch gekommen und gescheitert sind. Doch ihr... ihr habt das Glück, dass Hades euch bemerkt hat. Der Herr der Toten langweilt sich und gibt euch die Chance als Gewinner seines Spiels vom Tartaros auszusteigen und die Ewigkeit im Paradies Elysions zu genießen.</p>
+                <p>Drei Ebenen der Unterwelt liegen vor euch, jede gefährlicher als die letzte. Zuerst die finsteren Gründe des Tartaros, wo die Verdammten in ewiger Qual schreien. Dann die öden Aschefelder Asphodels, durch die die Vergessenen irren, ohne Hoffnung auf Erlösung. Und schließlich das Paradies des Elysion, wo die Helden ruhen – wenn ihr es so weit schafft.</p>
+            </div>
+            
+            <div class="rules-section">
+                <h3>Spielinhalt</h3>
+                <ul>
+                    <li>3 Spielbrett Ebenen</li>
+                    <li>1 Anleitung</li>
+                    <li>4 Spielfiguren</li>
+                    <li>8 Minispiel-Boxen</li>
+                    <li>258 Karten</li>
+                    <li>50 Wände</li>
+                    <li>9 Itemfeld-Plättchen</li>
+                    <li>18 Aktionsfeld-Plättchen</li>
+                    <li>3 Charons Boot</li>
+                    <li>4 Spielhilfen</li>
+                </ul>
+            </div>
+            
+            <div class="rules-section">
+                <h3>Spielvorbereitung</h3>
+                <ul>
+                    <li>Spielbrett Ebenen zusammenstecken (Reihenfolge: Rot → Grau → Grün)</li>
+                    <li>Spielbrett Schablone ziehen</li>
+                    <li>Spielbrettfelder und Wände an die Stellen packen die auf der Schablone zu sehen sind</li>
+                    <li>Handkarten verteilen - 3 von jedem Symbol (Kreis, Dreieck, Viereck)</li>
+                    <li>Kartenstapel Mischen und an vorgesehene Positionen legen</li>
+                    <li>Spielfiguren auf den Start stellen</li>
+                </ul>
+            </div>
+            
+            <div class="rules-section">
+                <h3>Ziel des Spiels</h3>
+                <p>Die meisten Siegpunkte sammeln, um am Ende in Elysion bleiben zu können und nicht wieder in den Tartaros zurück geschickt zu werden.</p>
+            </div>
+            
+            <div class="rules-section">
+                <h3>Spielablauf</h3>
+                <ul>
+                    <li>Verdeckt Charakterkarte ziehen</li>
+                    <li>Ältester Spieler beginnt mit der ersten Bewegung im Sternschritt</li>
+                    <li>Nur ein Spieler darf gleichzeitig auf einem Feld stehen</li>
+                    <li>Nach einem Zug wird die Stoppuhr angehalten und die des nächsten Spielers gestartet</li>
+                    <li>Auf der ersten Ebene geht es im Uhrzeigersinn Reihum</li>
+                    <li>Bei Erreichen eines Ereignis- oder Itemfelds wird eine Karte gezogen und die Aktion ausgeführt</li>
+                    <li>Nach einer Minute müssen alle Spieler Charons Schiff erreicht haben (Zeitstrafe bei Verspätung)</li>
+                    <li>Auf Charons Schiff: Relikte gegen Charons Münzen eintauschen</li>
+                    <li>Minispiel (Hades Prüfung) nach jeder Ebene</li>
+                    <li>Nach dem 3. Minispiel Siegpunkte auszählen und Zusatzpunkte verteilen</li>
+                </ul>
+            </div>
+            
+            <div class="rules-section">
+                <h3>Felder & Karten</h3>
+                <h4>Felder:</h4>
+                <ul>
+                    <li><strong>Ereignisfeld:</strong> Kampfprüfungen, Arenaprüfungen, Fallen und Relikte</li>
+                    <li><strong>Itemfeld:</strong> Granatapfel, Ambrosia, Apollos Pfeil, Rostiger Schlüssel</li>
+                    <li><strong>Dungeon:</strong> Mit Rostigem Schlüssel öffnen (nur Ebene 3)</li>
+                    <li><strong>Charons Schiff:</strong> Zwischen den Ebenen, Ort der Minispiele</li>
+                    <li><strong>Hades:</strong> Siegpunkteauszählung am Spielende</li>
+                </ul>
+                
+                <h4>Karten:</h4>
+                <ul>
+                    <li><strong>Kampfprüfung:</strong> Symbole in richtiger Reihenfolge legen</li>
+                    <li><strong>Duellprüfung:</strong> Gegen anderen Spieler antreten</li>
+                    <li><strong>Falle:</strong> Symbole legen oder Wille verlieren</li>
+                    <li><strong>Relikte:</strong> Siegpunkte oder Charons Münzen</li>
+                    <li><strong>Items:</strong> Granatapfel (+5 Wille), Ambrosia (+10 Wille), Apollos Pfeil, Rostiger Schlüssel</li>
+                    <li><strong>Artefakte:</strong> Rad der Fortuna, Hermes Schuhe, Schild des Aegis, Kopf der Medusa</li>
+                </ul>
+            </div>
+            
+            <div class="rules-section">
+                <h3>Siegpunkte</h3>
+                <p>Erhalten durch:</p>
+                <ul>
+                    <li>Ereignisfelder</li>
+                    <li>Rostiger Schlüssel Dungeon</li>
+                    <li>Minispiele</li>
+                    <li>Zusatzpunkte für:
+                        <ul>
+                            <li>Die meisten besiegten Gegner</li>
+                            <li>Entschärften Fallen</li>
+                            <li>Die meisten noch übrigen Items</li>
+                        </ul>
+                    </li>
+                </ul>
+                <p>Der Spieler mit den meisten Siegpunkten gewinnt und darf in Elysion bleiben. Bei Gleichstand werden alle in den Tartaros verbannt.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Modal Funktionalität
+        const modal = document.getElementById("rules-modal");
+        const btn = document.getElementById("rules-btn");
+        const span = document.getElementsByClassName("close-modal")[0];
+
+        btn.onclick = function() {
+            modal.style.display = "block";
+            document.body.style.overflow = "hidden";
+        }
+
+        span.onclick = function() {
+            modal.style.display = "none";
+            document.body.style.overflow = "auto";
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+                document.body.style.overflow = "auto";
+            }
+        }
+    </script>
 </body>
 </html>

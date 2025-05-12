@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
   <title>Escape the Tartarus - Schachuhr</title>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
   <style>
@@ -19,9 +19,22 @@
       --ash: #a89988;
       --bone: #e8e8e8;
       
+      /* Spielerfarben */
+      --player1: #ff4500; /* Rot/Orange */
+      --player2: #3a86ff; /* Blau */
+      --player3: #2ecc71; /* Grün */
+      --player4: #f39c12; /* Orange */
+      --player5: #9b59b6; /* Lila */
+      --player6: #1abc9c; /* Türkis */
+      
       /* Effekte */
       --glow: 0 0 15px rgba(255, 107, 53, 0.7);
       --deep-glow: 0 0 30px rgba(255, 69, 0, 0.5);
+    }
+
+    * {
+      -webkit-tap-highlight-color: transparent;
+      box-sizing: border-box;
     }
 
     body {
@@ -32,6 +45,7 @@
       color: var(--bone);
       min-height: 100vh;
       overflow-x: hidden;
+      touch-action: manipulation;
       background-image: 
         radial-gradient(circle at 20% 30%, var(--lava-core) 0%, transparent 25%),
         radial-gradient(circle at 80% 70%, var(--lava-glowing) 0%, transparent 25%);
@@ -57,13 +71,13 @@
 
     #main {
       max-width: 900px;
-      margin: 40px auto;
-      padding: 40px 30px;
+      margin: 20px auto;
+      padding: 20px 15px;
       text-align: center;
       background-color: var(--abyss);
-      border-radius: 20px;
-      box-shadow: var(--glow), 0 10px 30px rgba(0, 0, 0, 0.8);
-      border: 2px solid var(--lava-core);
+      border-radius: 15px;
+      box-shadow: var(--glow), 0 5px 15px rgba(0, 0, 0, 0.8);
+      border: 1px solid var(--lava-core);
       position: relative;
       overflow: hidden;
       backdrop-filter: blur(5px);
@@ -75,76 +89,81 @@
       top: 0;
       left: 0;
       right: 0;
-      height: 8px;
+      height: 6px;
       background: linear-gradient(90deg, 
         transparent, 
         var(--lava-glowing), 
         var(--lava-core), 
         var(--lava-glowing), 
         transparent);
-      box-shadow: 0 0 20px var(--lava-core);
+      box-shadow: 0 0 15px var(--lava-core);
     }
 
     /* Titel Styling */
     .title-container {
-      margin-bottom: 30px;
+      margin-bottom: 15px;
       position: relative;
     }
 
     .title {
       font-family: 'Cinzel Decorative', serif;
-      font-size: 3rem;
+      font-size: 2.5rem;
       margin: 0;
       background: linear-gradient(to right, var(--bone), var(--ash));
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-      letter-spacing: 2px;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+      letter-spacing: 1px;
     }
 
     .subtitle {
-      font-size: 1rem;
+      font-size: 0.9rem;
       color: var(--ash);
       margin-top: 5px;
-      letter-spacing: 3px;
+      letter-spacing: 2px;
       text-transform: uppercase;
     }
 
     /* Timer Display */
     #display {
       font-family: 'Roboto', sans-serif;
-      font-size: 6rem;
-      margin: 30px 0 10px;
+      font-size: 4rem;
+      margin: 15px 0 5px;
       font-weight: 700;
       color: var(--lava-light);
       text-shadow: var(--deep-glow);
-      letter-spacing: 2px;
+      letter-spacing: 1px;
       position: relative;
       display: inline-block;
-      transition: all 0.3s ease;
     }
 
     #display::after {
       content: "";
       position: absolute;
-      bottom: -10px;
+      bottom: -8px;
       left: 50%;
       transform: translateX(-50%);
       width: 80%;
-      height: 3px;
+      height: 2px;
       background: linear-gradient(to right, transparent, var(--lava-core), transparent);
     }
 
-    /* Spieler Anzeige */
+    /* Spieler Anzeige mit individueller Farbe */
     #player {
-      font-size: 1.8rem;
-      margin-bottom: 40px;
-      color: var(--lava-light);
-      text-shadow: 0 0 10px rgba(255, 140, 90, 0.5);
+      font-size: 1.5rem;
+      margin-bottom: 20px;
       font-weight: 500;
       position: relative;
     }
+
+    /* Individuelle Spielerfarben */
+    .player-color-0 { color: var(--player1); text-shadow: 0 0 10px rgba(255, 69, 0, 0.5); }
+    .player-color-1 { color: var(--player2); text-shadow: 0 0 10px rgba(58, 134, 255, 0.5); }
+    .player-color-2 { color: var(--player3); text-shadow: 0 0 10px rgba(46, 204, 113, 0.5); }
+    .player-color-3 { color: var(--player4); text-shadow: 0 0 10px rgba(243, 156, 18, 0.5); }
+    .player-color-4 { color: var(--player5); text-shadow: 0 0 10px rgba(155, 89, 182, 0.5); }
+    .player-color-5 { color: var(--player6); text-shadow: 0 0 10px rgba(26, 188, 156, 0.5); }
 
     #player::before, #player::after {
       content: "⚔";
@@ -152,14 +171,15 @@
       top: 50%;
       transform: translateY(-50%);
       opacity: 0.6;
+      font-size: 1rem;
     }
 
     #player::before {
-      left: -30px;
+      left: -20px;
     }
 
     #player::after {
-      right: -30px;
+      right: -20px;
     }
 
     /* Hauptbuttons */
@@ -167,24 +187,23 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 20px;
-      margin: 40px 0;
+      gap: 15px;
+      margin: 20px 0;
       width: 100%;
     }
 
     .main-btn {
-      width: 90%;
-      max-width: 700px;
-      padding: 25px;
-      border-radius: 15px;
+      width: 100%;
+      padding: 20px;
+      border-radius: 12px;
       border: none;
       font-weight: bold;
-      font-size: 1.5rem;
+      font-size: 1.3rem;
       cursor: pointer;
       transition: all 0.3s ease;
       position: relative;
       overflow: hidden;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
       z-index: 1;
     }
 
@@ -209,41 +228,46 @@
     }
 
     .main-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 25px rgba(255, 69, 0, 0.6);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 69, 0, 0.6);
     }
 
     .main-btn:active {
       transform: translateY(1px);
     }
 
+    /* Vergrößerter "Weitergeben"-Button */
     #nextPlayerBtn {
-      font-size: 3.5rem;
-      padding: 30px;
+      font-size: 3rem;
+      padding: 25px;
       color: white;
       background: linear-gradient(to bottom, 
         var(--lava-glowing), 
         var(--lava-core));
-      border: 2px solid var(--lava-light);
+      border: 1px solid var(--lava-light);
+      min-height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     #pauseResumeBtn {
       background: linear-gradient(to bottom, 
         var(--smoke), 
         var(--abyss));
-      border: 2px solid var(--ember);
+      border: 1px solid var(--ember);
       color: var(--bone);
     }
 
     #startBtn {
-      font-size: 3rem;
-      padding: 30px;
-      margin: 30px auto;
+      font-size: 2.5rem;
+      padding: 25px;
+      margin: 20px auto;
       background: linear-gradient(to bottom, 
         var(--lava-glowing), 
         var(--lava-core));
       color: white;
-      border: 2px solid var(--lava-light);
+      border: 1px solid var(--lava-light);
       box-shadow: var(--glow);
       display: block;
     }
@@ -252,19 +276,19 @@
     .quick-adjust-container {
       display: flex;
       justify-content: center;
-      gap: 15px;
-      margin-top: 20px;
+      gap: 10px;
+      margin-top: 15px;
       flex-wrap: wrap;
     }
 
     .quick-adjust-btn {
-      padding: 10px 20px;
+      padding: 10px 15px;
       background: var(--obsidian);
       border: 1px solid var(--smoke);
       border-radius: 8px;
       color: var(--bone);
       cursor: pointer;
-      font-size: 1rem;
+      font-size: 0.9rem;
       transition: all 0.2s ease;
       display: flex;
       align-items: center;
@@ -283,44 +307,50 @@
 
     .quick-adjust-btn:hover {
       transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      box-shadow: 0 3px 6px rgba(0,0,0,0.2);
     }
 
-    /* Spieler Sidebar */
+    /* Spieler Sidebar mit individuellen Farben */
     #sidebar {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      margin-top: 40px;
-      align-items: center;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+      margin-top: 25px;
+      justify-content: center;
     }
 
     .player-time {
-      padding: 15px 25px;
+      padding: 10px;
       background: linear-gradient(to right, 
         var(--obsidian), 
         var(--abyss), 
         var(--obsidian));
-      border-radius: 10px;
-      width: 85%;
-      max-width: 350px;
+      border-radius: 8px;
       text-align: center;
-      font-size: 1.1rem;
-      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+      font-size: 0.9rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
       border: 1px solid var(--smoke);
       transition: all 0.3s ease;
       position: relative;
       overflow: hidden;
+      min-width: 0;
     }
+
+    /* Individuelle Spielerfarben für Sidebar */
+    .player-time[data-player="0"]::before { background: var(--player1); }
+    .player-time[data-player="1"]::before { background: var(--player2); }
+    .player-time[data-player="2"]::before { background: var(--player3); }
+    .player-time[data-player="3"]::before { background: var(--player4); }
+    .player-time[data-player="4"]::before { background: var(--player5); }
+    .player-time[data-player="5"]::before { background: var(--player6); }
 
     .player-time::before {
       content: "";
       position: absolute;
       top: 0;
       left: 0;
-      width: 5px;
+      width: 4px;
       height: 100%;
-      background: var(--lava-core);
       transition: width 0.3s;
     }
 
@@ -331,28 +361,25 @@
     }
 
     .player-time.active::before {
-      width: 10px;
-      background: linear-gradient(to bottom, 
-        var(--lava-light), 
-        var(--lava-core));
+      width: 8px;
     }
 
     /* Edit Menu */
     #editMenuToggle {
       position: fixed;
-      top: 25px;
-      right: 25px;
+      top: 15px;
+      right: 15px;
       background: var(--lava-core);
       color: white;
-      width: 60px;
-      height: 60px;
+      width: 50px;
+      height: 50px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.8rem;
+      font-size: 1.5rem;
       cursor: pointer;
-      border: 2px solid var(--lava-light);
+      border: 1px solid var(--lava-light);
       box-shadow: var(--glow);
       z-index: 1001;
       transition: all 0.3s ease;
@@ -364,20 +391,20 @@
 
     #editMenu {
       position: fixed;
-      top: 100px;
-      right: -250px;
-      width: 220px;
+      top: 80px;
+      right: -220px;
+      width: 180px;
       background: var(--obsidian);
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      padding: 20px;
+      gap: 10px;
+      padding: 15px;
       z-index: 1000;
-      border-radius: 15px 0 0 15px;
+      border-radius: 12px 0 0 12px;
       transition: right 0.4s ease;
       border: 1px solid var(--lava-core);
       border-right: none;
-      box-shadow: -5px 5px 20px rgba(0, 0, 0, 0.5);
+      box-shadow: -4px 4px 15px rgba(0, 0, 0, 0.5);
     }
 
     #editMenu.show {
@@ -385,20 +412,20 @@
     }
 
     .menu-btn {
-      padding: 12px;
-      font-size: 1.1rem;
+      padding: 10px;
+      font-size: 0.9rem;
       background: linear-gradient(to right, 
         var(--abyss), 
         var(--obsidian));
       color: var(--bone);
-      border-radius: 8px;
+      border-radius: 6px;
       border: 1px solid var(--smoke);
       cursor: pointer;
       transition: all 0.3s ease;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
+      gap: 8px;
     }
 
     .menu-btn:hover {
@@ -406,7 +433,7 @@
         var(--obsidian), 
         var(--abyss));
       border-color: var(--lava-light);
-      transform: translateX(-5px);
+      transform: translateX(-4px);
     }
 
     /* Bearbeitungsmodus Stile */
@@ -560,11 +587,11 @@
       border-color: var(--lava-light);
     }
 
-    /* Responsive Anpassungen */
-    @media (max-width: 768px) {
+    /* Responsive Anpassungen für sehr kleine Geräte */
+    @media (max-width: 600px) {
       #main {
-        margin: 20px 15px;
-        padding: 30px 15px;
+        margin: 10px;
+        padding: 15px 10px;
       }
       
       .title {
@@ -572,34 +599,119 @@
       }
       
       #display {
-        font-size: 4rem;
+        font-size: 3.2rem;
+        margin: 10px 0;
+      }
+      
+      #player {
+        font-size: 1.3rem;
+        margin-bottom: 15px;
       }
       
       .main-btn {
-        padding: 20px;
+        padding: 18px;
         font-size: 1.2rem;
       }
       
       #nextPlayerBtn {
         font-size: 2.5rem;
+        padding: 20px;
+        min-height: 80px;
+      }
+      
+      #startBtn {
+        font-size: 2.2rem;
+        padding: 20px;
+      }
+      
+      #sidebar {
+        grid-template-columns: 1fr 1fr;
+      }
+      
+      .player-time {
+        font-size: 0.8rem;
+        padding: 8px;
+      }
+      
+      /* Bearbeitungsmodus Anpassungen für Mobile */
+      #editPanel {
+        padding: 15px;
       }
       
       .player-edit-container {
-        flex-direction: column;
-        align-items: stretch;
+        padding: 12px;
       }
       
-      .player-name-input {
-        width: 100%;
+      .player-name-input, .time-input {
+        font-size: 0.9rem;
+        padding: 8px;
       }
       
-      .time-input-container {
-        width: 100%;
-        justify-content: space-between;
+      .edit-btn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
       }
+    }
 
-      .time-adjust-buttons, .quick-adjust-container {
-        justify-content: center;
+    @media (max-width: 400px) {
+      .title {
+        font-size: 1.8rem;
+      }
+      
+      #display {
+        font-size: 2.8rem;
+      }
+      
+      #player {
+        font-size: 1.1rem;
+      }
+      
+      .main-btn {
+        padding: 16px;
+        font-size: 1.1rem;
+      }
+      
+      #nextPlayerBtn, #startBtn {
+        font-size: 2rem;
+        padding: 18px;
+      }
+      
+      #sidebar {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Landscape-Optimierung */
+    @media (max-height: 500px) and (orientation: landscape) {
+      #main {
+        max-width: 95%;
+        margin: 10px auto;
+        padding: 15px;
+      }
+      
+      .title-container {
+        margin-bottom: 10px;
+      }
+      
+      #display {
+        font-size: 2.5rem;
+        margin: 10px 0;
+      }
+      
+      #player {
+        margin-bottom: 10px;
+      }
+      
+      #mainButtonContainer {
+        margin: 15px 0;
+      }
+      
+      #sidebar {
+        grid-template-columns: repeat(4, 1fr);
+      }
+      
+      #nextPlayerBtn {
+        min-height: 70px;
       }
     }
   </style>
@@ -671,14 +783,21 @@
 
   function updateDisplays() {
     document.getElementById("display").textContent = formatTime(players[currentPlayer].time, true);
-    document.getElementById("player").textContent = players[currentPlayer].name;
-
+    
+    const playerElement = document.getElementById("player");
+    playerElement.textContent = players[currentPlayer].name;
+    // Alte Farbklassen entfernen
+    playerElement.className = '';
+    // Neue Farbklasse hinzufügen
+    playerElement.classList.add(`player-color-${currentPlayer % 6}`);
+    
     const sidebar = document.getElementById("sidebar");
     sidebar.innerHTML = "";
     players.forEach((p, i) => {
       const div = document.createElement("div");
       div.className = "player-time" + (i === currentPlayer ? " active" : "");
       div.textContent = `${p.name}: ${formatTime(p.time)}`;
+      div.setAttribute("data-player", i % 6);
       sidebar.appendChild(div);
     });
   }
@@ -853,8 +972,8 @@
     const container = document.querySelector(`.player-edit-container[data-id="${playerIndex}"]`);
     container.style.transform = "scale(1.02)";
     container.style.boxShadow = seconds > 0 
-      ? "0 0 10px rgba(100, 255, 100, 0.5)" 
-      : "0 0 10px rgba(255, 100, 100, 0.5)";
+      ? "0 0 8px rgba(100, 255, 100, 0.5)" 
+      : "0 0 8px rgba(255, 100, 100, 0.5)";
     
     setTimeout(() => {
       container.style.transform = "";
@@ -877,7 +996,7 @@
     // Visuelles Feedback
     const display = document.getElementById("display");
     display.style.color = seconds > 0 ? "#a1ffa1" : "#ffa1a1";
-    display.style.transform = "scale(1.05)";
+    display.style.transform = "scale(1.03)";
     
     setTimeout(() => {
       display.style.color = "";
@@ -926,6 +1045,8 @@
   // Initialisierung
   document.getElementById("editMenuToggle").addEventListener("click", toggleSidebar);
 
+  // Touch-Optimierungen
+  document.addEventListener('touchstart', function() {}, {passive: true});
 
   updateDisplays();
 </script>
