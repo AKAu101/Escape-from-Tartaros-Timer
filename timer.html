@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
   <title>Escape the Tartarus - Schachuhr</title>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
       /* Tartarus Farbpalette */
@@ -151,7 +152,8 @@
 
     /* Spieler Anzeige mit individueller Farbe */
     #player {
-      font-size: 1.5rem;
+      font-size: 2rem;
+      margin-top: 20px;
       margin-bottom: 20px;
       font-weight: 500;
       position: relative;
@@ -236,10 +238,9 @@
       transform: translateY(1px);
     }
 
-    /* Vergrößerter "Weitergeben"-Button */
     #nextPlayerBtn {
       font-size: 3rem;
-      padding: 25px;
+      padding: 60px;
       color: white;
       background: linear-gradient(to bottom, 
         var(--lava-glowing), 
@@ -252,6 +253,7 @@
     }
 
     #pauseResumeBtn {
+      padding: 30px;
       background: linear-gradient(to bottom, 
         var(--smoke), 
         var(--abyss));
@@ -320,7 +322,7 @@
     }
 
     .player-time {
-      padding: 10px;
+      padding: 15px;
       background: linear-gradient(to right, 
         var(--obsidian), 
         var(--abyss), 
@@ -728,8 +730,13 @@
   <div id="player">Spieler 1</div>
 
   <div id="mainButtonContainer" style="display:none;">
-    <button id="nextPlayerBtn" class="main-btn" onclick="stopAndNext()">⏭</button>
-    <button id="pauseResumeBtn" class="main-btn" onclick="togglePause()">⏸</button>
+    <button id="nextPlayerBtn" class="main-btn" onclick="stopAndNext()">
+      <i class="fas fa-forward"></i> <!-- Überspringen (Skip) -->
+    </button>
+
+    <button id="pauseResumeBtn" class="main-btn" onclick="togglePause()">
+      <i class="fas fa-pause"></i> <!-- Pause -->
+    </button>
     
     <div class="quick-adjust-container">
       <button class="quick-adjust-btn add" onclick="adjustCurrentPlayerTime(5)">
@@ -836,11 +843,11 @@
     if (isPaused) {
       clearInterval(interval);
       interval = null;
-      pauseBtn.textContent = "⏵";
+      pauseBtn.innerHTML = '<i class="fas fa-play"></i>';
     } else {
       lastTimestamp = performance.now();
       startTimer();
-      pauseBtn.textContent = "⏸";
+      pauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
     }
   }
 
@@ -868,7 +875,7 @@
     updateDisplays();
     document.getElementById("startBtn").style.display = "block";
     document.getElementById("mainButtonContainer").style.display = "none";
-    pauseBtn.textContent = "⏸";
+    pauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
   }
 
   function startGame() {
@@ -886,7 +893,7 @@
       isPaused = true;
       clearInterval(interval);
       interval = null;
-      pauseBtn.textContent = "⏵";
+      pauseBtn.innerHTML = '<i class="fas fa-play"></i>';
     }
 
     if (!editMode) {
