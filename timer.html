@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
   <title>Escape the Tartarus - Schachuhr</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
@@ -19,15 +19,15 @@
       --smoke: #483c32;
       --ash: #a89988;
       --bone: #e8e8e8;
-
+      
       /* Spielerfarben */
-      --player1: #ff4500;
-      --player2: #3a86ff;
-      --player3: #2ecc71;
-      --player4: #f39c12;
-      --player5: #9b59b6;
-      --player6: #1abc9c;
-
+      --player1: #ff4500; /* Rot/Orange */
+      --player2: #3a86ff; /* Blau */
+      --player3: #2ecc71; /* Grün */
+      --player4: #f39c12; /* Orange */
+      --player5: #9b59b6; /* Lila */
+      --player6: #1abc9c; /* Türkis */
+      
       /* Effekte */
       --glow: 0 0 15px rgba(255, 107, 53, 0.7);
       --deep-glow: 0 0 30px rgba(255, 69, 0, 0.5);
@@ -36,23 +36,21 @@
     * {
       -webkit-tap-highlight-color: transparent;
       box-sizing: border-box;
-      margin: 0;
-      padding: 0;
     }
 
     body {
       font-family: 'Roboto', sans-serif;
+      margin: 0;
+      padding: 0;
       background-color: var(--void);
       color: var(--bone);
-      height: 100vh;
-      overflow: hidden;
+      min-height: 100vh;
+      overflow-x: hidden;
       touch-action: manipulation;
-      background-image:
-              radial-gradient(circle at 20% 30%, var(--lava-core) 0%, transparent 25%),
-              radial-gradient(circle at 80% 70%, var(--lava-glowing) 0%, transparent 25%);
+      background-image: 
+        radial-gradient(circle at 20% 30%, var(--lava-core) 0%, transparent 25%),
+        radial-gradient(circle at 80% 70%, var(--lava-glowing) 0%, transparent 25%);
       background-attachment: fixed;
-      display: flex;
-      flex-direction: column;
     }
 
     /* Lava Risse Effekt */
@@ -63,65 +61,82 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background:
-              linear-gradient(45deg, transparent 48%, var(--lava-core) 48%, var(--lava-core) 52%, transparent 52%),
-              linear-gradient(-45deg, transparent 48%, var(--lava-core) 48%, var(--lava-core) 52%, transparent 52%);
+      background: 
+        linear-gradient(45deg, transparent 48%, var(--lava-core) 48%, var(--lava-core) 52%, transparent 52%),
+        linear-gradient(-45deg, transparent 48%, var(--lava-core) 48%, var(--lava-core) 52%, transparent 52%);
       background-size: 50px 50px;
       opacity: 0.1;
       pointer-events: none;
       z-index: -1;
     }
 
-    /* Header */
-    .header {
-      padding: 20px 15px 15px;
+    #main {
+      max-width: 900px;
+      margin: 20px auto;
+      padding: 20px 15px;
       text-align: center;
-      background: linear-gradient(to bottom, var(--abyss), transparent);
-      border-bottom: 2px solid var(--lava-core);
-      box-shadow: 0 4px 15px rgba(255, 69, 0, 0.3);
-      flex-shrink: 0;
+      background-color: var(--abyss);
+      border-radius: 15px;
+      box-shadow: var(--glow), 0 5px 15px rgba(0, 0, 0, 0.8);
+      border: 1px solid var(--lava-core);
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(5px);
+    }
+
+    #main::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: linear-gradient(90deg, 
+        transparent, 
+        var(--lava-glowing), 
+        var(--lava-core), 
+        var(--lava-glowing), 
+        transparent);
+      box-shadow: 0 0 15px var(--lava-core);
+    }
+
+    /* Titel Styling */
+    .title-container {
+      margin-bottom: 15px;
+      position: relative;
     }
 
     .title {
       font-family: 'Cinzel Decorative', serif;
-      font-size: 1.8rem;
+      font-size: 2.5rem;
+      margin: 0;
       background: linear-gradient(to right, var(--bone), var(--ash));
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
       text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
       letter-spacing: 1px;
-      margin-bottom: 5px;
     }
 
     .subtitle {
-      font-size: 0.7rem;
+      font-size: 0.9rem;
       color: var(--ash);
+      margin-top: 5px;
       letter-spacing: 2px;
       text-transform: uppercase;
     }
 
-    /* Main Timer Area */
-    .timer-section {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-      min-height: 0;
-    }
-
+    /* Timer Display */
     #display {
       font-family: 'Roboto', sans-serif;
-      font-size: 4.5rem;
+      font-size: 4rem;
+      margin: 15px 0 5px;
       font-weight: 700;
       color: var(--lava-light);
       text-shadow: var(--deep-glow);
-      letter-spacing: 2px;
-      margin-bottom: 15px;
-      text-align: center;
+      letter-spacing: 1px;
       position: relative;
+      display: inline-block;
     }
 
     #display::after {
@@ -131,17 +146,17 @@
       left: 50%;
       transform: translateX(-50%);
       width: 80%;
-      height: 3px;
+      height: 2px;
       background: linear-gradient(to right, transparent, var(--lava-core), transparent);
     }
 
+    /* Spieler Anzeige mit individueller Farbe */
     #player {
-      font-size: 1.8rem;
-      margin-bottom: 25px;
+      font-size: 2rem;
+      margin-top: 20px;
+      margin-bottom: 20px;
       font-weight: 500;
-      text-align: center;
       position: relative;
-      padding: 0 40px;
     }
 
     /* Individuelle Spielerfarben */
@@ -158,42 +173,40 @@
       top: 50%;
       transform: translateY(-50%);
       opacity: 0.6;
-      font-size: 1.2rem;
+      font-size: 1rem;
     }
 
-    #player::before { left: 10px; }
-    #player::after { right: 10px; }
-
-    /* Control Buttons */
-    .controls {
-      flex-shrink: 0;
-      padding: 0 15px 15px;
+    #player::before {
+      left: -20px;
     }
 
+    #player::after {
+      right: -20px;
+    }
+
+    /* Hauptbuttons */
     #mainButtonContainer {
-      display: none;
+      display: flex;
       flex-direction: column;
+      align-items: center;
       gap: 15px;
+      margin: 20px 0;
       width: 100%;
     }
 
     .main-btn {
       width: 100%;
-      min-height: 70px;
-      border-radius: 15px;
+      padding: 20px;
+      border-radius: 12px;
       border: none;
       font-weight: bold;
-      font-size: 1.4rem;
+      font-size: 1.3rem;
       cursor: pointer;
       transition: all 0.3s ease;
       position: relative;
       overflow: hidden;
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
       z-index: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
     }
 
     .main-btn::before {
@@ -203,68 +216,85 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(45deg,
-      var(--lava-core),
-      var(--lava-glowing),
-      var(--lava-core));
+      background: linear-gradient(45deg, 
+        var(--lava-core), 
+        var(--lava-glowing), 
+        var(--lava-core));
       opacity: 0.8;
       z-index: -1;
       transition: opacity 0.3s;
     }
 
+    .main-btn:hover::before {
+      opacity: 1;
+    }
+
+    .main-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 69, 0, 0.6);
+    }
+
     .main-btn:active {
-      transform: scale(0.98);
-      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.6);
+      transform: translateY(1px);
     }
 
     #nextPlayerBtn {
-      min-height: 90px;
-      font-size: 2rem;
+      font-size: 3rem;
+      padding: 50px;
       color: white;
-      background: linear-gradient(to bottom, var(--lava-glowing), var(--lava-core));
-      border: 2px solid var(--lava-light);
+      background: linear-gradient(to bottom, 
+        var(--lava-glowing), 
+        var(--lava-core));
+      border: 1px solid var(--lava-light);
+      min-height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     #pauseResumeBtn {
-      min-height: 70px;
-      background: linear-gradient(to bottom, var(--smoke), var(--abyss));
-      border: 2px solid var(--ember);
+      padding: 25px;
+      background: linear-gradient(to bottom, 
+        var(--smoke), 
+        var(--abyss));
+      border: 1px solid var(--ember);
       color: var(--bone);
     }
 
     #startBtn {
-      font-size: 2rem;
-      min-height: 80px;
-      background: linear-gradient(to bottom, var(--lava-glowing), var(--lava-core));
+      font-size: 2.5rem;
+      padding: 25px;
+      margin: 20px auto;
+      background: linear-gradient(to bottom, 
+        var(--lava-glowing), 
+        var(--lava-core));
       color: white;
-      border: 2px solid var(--lava-light);
+      border: 1px solid var(--lava-light);
       box-shadow: var(--glow);
+      display: block;
     }
 
-    /* Quick Adjust Buttons */
+    /* Quick-Adjust Buttons */
     .quick-adjust-container {
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       gap: 10px;
       margin-top: 15px;
+      flex-wrap: wrap;
     }
 
     .quick-adjust-btn {
-      flex: 1;
-      padding: 15px 10px;
+      padding: 10px 15px;
       background: var(--obsidian);
-      border: 2px solid var(--smoke);
-      border-radius: 12px;
+      border: 1px solid var(--smoke);
+      border-radius: 8px;
       color: var(--bone);
       cursor: pointer;
-      font-size: 1rem;
-      font-weight: 500;
+      font-size: 0.9rem;
       transition: all 0.2s ease;
       display: flex;
-      flex-direction: column;
       align-items: center;
       gap: 5px;
-      min-height: 60px;
     }
 
     .quick-adjust-btn.add {
@@ -277,38 +307,35 @@
       border-color: #9e5a5a;
     }
 
-    .quick-adjust-btn:active {
-      transform: scale(0.95);
+    .quick-adjust-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 3px 6px rgba(0,0,0,0.2);
     }
 
-    /* Player Sidebar */
-    .sidebar-container {
-      flex-shrink: 0;
-      padding: 15px;
-      background: linear-gradient(to top, var(--abyss), transparent);
-      border-top: 1px solid var(--lava-core);
-      max-height: 25vh;
-      overflow-y: auto;
-    }
-
+    /* Spieler Sidebar mit individuellen Farben */
     #sidebar {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
       gap: 10px;
+      margin-top: 25px;
+      justify-content: center;
     }
 
     .player-time {
-      padding: 12px;
-      background: linear-gradient(to right, var(--obsidian), var(--abyss));
-      border-radius: 10px;
+      padding: 15px;
+      background: linear-gradient(to right, 
+        var(--obsidian), 
+        var(--abyss), 
+        var(--obsidian));
+      border-radius: 8px;
       text-align: center;
       font-size: 0.9rem;
-      font-weight: 500;
-      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
-      border: 2px solid var(--smoke);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--smoke);
       transition: all 0.3s ease;
       position: relative;
       overflow: hidden;
+      min-width: 0;
     }
 
     /* Individuelle Spielerfarben für Sidebar */
@@ -332,7 +359,7 @@
     .player-time.active {
       border-color: var(--lava-light);
       box-shadow: var(--glow);
-      transform: scale(1.05);
+      transform: scale(1.02);
     }
 
     .player-time.active::before {
@@ -346,40 +373,40 @@
       right: 15px;
       background: var(--lava-core);
       color: white;
-      width: 60px;
-      height: 60px;
+      width: 50px;
+      height: 50px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.8rem;
+      font-size: 1.5rem;
       cursor: pointer;
-      border: 2px solid var(--lava-light);
+      border: 1px solid var(--lava-light);
       box-shadow: var(--glow);
       z-index: 1001;
       transition: all 0.3s ease;
     }
 
-    #editMenuToggle:active {
-      transform: scale(0.9);
+    #editMenuToggle:hover {
+      transform: rotate(90deg) scale(1.1);
     }
 
     #editMenu {
       position: fixed;
-      top: 90px;
-      right: -250px;
-      width: 200px;
+      top: 80px;
+      right: -220px;
+      width: 180px;
       background: var(--obsidian);
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      padding: 20px;
+      gap: 10px;
+      padding: 15px;
       z-index: 1000;
-      border-radius: 15px 0 0 15px;
+      border-radius: 12px 0 0 12px;
       transition: right 0.4s ease;
-      border: 2px solid var(--lava-core);
+      border: 1px solid var(--lava-core);
       border-right: none;
-      box-shadow: -6px 6px 20px rgba(0, 0, 0, 0.6);
+      box-shadow: -4px 4px 15px rgba(0, 0, 0, 0.5);
     }
 
     #editMenu.show {
@@ -387,61 +414,50 @@
     }
 
     .menu-btn {
-      padding: 15px;
-      font-size: 1rem;
-      font-weight: 500;
-      background: linear-gradient(to right, var(--abyss), var(--obsidian));
+      padding: 10px;
+      font-size: 0.9rem;
+      background: linear-gradient(to right, 
+        var(--abyss), 
+        var(--obsidian));
       color: var(--bone);
-      border-radius: 10px;
-      border: 2px solid var(--smoke);
+      border-radius: 6px;
+      border: 1px solid var(--smoke);
       cursor: pointer;
       transition: all 0.3s ease;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      min-height: 50px;
+      gap: 8px;
     }
 
-    .menu-btn:active {
-      transform: scale(0.95);
-      background: linear-gradient(to right, var(--obsidian), var(--abyss));
+    .menu-btn:hover {
+      background: linear-gradient(to right, 
+        var(--obsidian), 
+        var(--abyss));
+      border-color: var(--lava-light);
+      transform: translateX(-4px);
     }
 
-    /* Edit Panel */
+    /* Bearbeitungsmodus Stile */
     #editPanel {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: var(--void);
-      z-index: 2000;
+      background: var(--obsidian);
+      border-radius: 15px;
+      padding: 25px;
+      margin-top: 30px;
+      border: 1px solid var(--lava-core);
+      box-shadow: var(--glow);
       display: none;
-      flex-direction: column;
-      overflow-y: auto;
-      padding: 20px;
-    }
-
-    .edit-header {
-      text-align: center;
-      margin-bottom: 25px;
-      padding-bottom: 15px;
-      border-bottom: 2px solid var(--lava-core);
-    }
-
-    .edit-header h3 {
-      font-size: 1.5rem;
-      color: var(--lava-light);
-      margin-bottom: 10px;
     }
 
     .player-edit-container {
-      background: var(--obsidian);
-      border-radius: 15px;
-      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
       margin-bottom: 15px;
-      border: 2px solid var(--smoke);
+      padding: 15px;
+      background: linear-gradient(to right, var(--abyss), var(--obsidian));
+      border-radius: 10px;
+      border: 1px solid var(--smoke);
       transition: all 0.3s ease;
     }
 
@@ -449,18 +465,17 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      margin-bottom: 15px;
     }
 
     .player-name-input {
       flex: 1;
-      padding: 15px;
+      min-width: 0;
+      padding: 10px;
       background: var(--abyss);
-      border: 2px solid var(--smoke);
-      border-radius: 10px;
+      border: 1px solid var(--smoke);
+      border-radius: 8px;
       color: var(--bone);
-      font-size: 1.1rem;
-      min-height: 50px;
+      font-size: 1rem;
     }
 
     .time-input-container {
@@ -468,56 +483,52 @@
       align-items: center;
       gap: 10px;
       background: var(--abyss);
-      padding: 15px;
-      border-radius: 10px;
-      border: 2px solid var(--smoke);
-      margin-bottom: 15px;
+      padding: 8px 15px;
+      border-radius: 8px;
+      border: 1px solid var(--smoke);
     }
 
     .time-input {
-      width: 80px;
-      padding: 12px;
-      background: var(--obsidian);
-      border: 2px solid var(--smoke);
-      border-radius: 8px;
+      width: 60px;
+      padding: 8px;
+      background: var(--abyss);
+      border: 1px solid var(--smoke);
+      border-radius: 5px;
       color: var(--bone);
       text-align: center;
-      font-size: 1.1rem;
-      min-height: 45px;
+      font-size: 1rem;
     }
 
     .time-input-label {
       color: var(--ash);
-      font-size: 1rem;
-      min-width: 50px;
-      font-weight: 500;
+      font-size: 0.9rem;
+      min-width: 40px;
     }
 
     .time-adjust-buttons {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+      flex-wrap: wrap;
     }
 
     .time-adjust-btn {
-      padding: 12px;
-      background: var(--abyss);
-      border: 2px solid var(--smoke);
-      border-radius: 8px;
+      padding: 6px 10px;
+      background: var(--obsidian);
+      border: 1px solid var(--smoke);
+      border-radius: 5px;
       color: var(--bone);
       cursor: pointer;
-      font-size: 1rem;
-      font-weight: 500;
+      font-size: 0.8rem;
       transition: all 0.2s ease;
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 5px;
-      min-height: 45px;
+      gap: 3px;
     }
 
-    .time-adjust-btn:active {
-      transform: scale(0.95);
+    .time-adjust-btn:hover {
+      border-color: var(--lava-light);
+      color: var(--lava-light);
     }
 
     .time-adjust-btn.add {
@@ -532,32 +543,29 @@
 
     .edit-buttons {
       display: flex;
-      flex-direction: column;
       gap: 15px;
-      margin-top: 25px;
-      padding-top: 20px;
-      border-top: 1px solid var(--smoke);
+      margin-top: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
     }
 
     .edit-btn {
-      padding: 18px 25px;
+      padding: 12px 25px;
       background: linear-gradient(to bottom, var(--lava-glowing), var(--lava-core));
       color: white;
       border: none;
-      border-radius: 12px;
+      border-radius: 8px;
       cursor: pointer;
       font-weight: bold;
-      font-size: 1.1rem;
       transition: all 0.3s ease;
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 10px;
-      min-height: 60px;
+      gap: 8px;
     }
 
-    .edit-btn:active {
-      transform: scale(0.98);
+    .edit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--glow);
     }
 
     .edit-btn.secondary {
@@ -565,196 +573,191 @@
     }
 
     .remove-btn {
-      background: var(--abyss);
+      background: transparent;
       color: var(--ash);
-      border: 2px solid var(--smoke);
-      border-radius: 10px;
-      padding: 12px;
+      border: 1px solid var(--smoke);
+      border-radius: 5px;
+      padding: 8px 12px;
       cursor: pointer;
       transition: all 0.3s ease;
       display: flex;
       align-items: center;
-      justify-content: center;
-      min-width: 50px;
-      min-height: 50px;
-      font-size: 1.2rem;
     }
 
-    .remove-btn:active {
-      transform: scale(0.95);
+    .remove-btn:hover {
       color: var(--lava-light);
       border-color: var(--lava-light);
     }
 
-    /* Landscape Optimizations */
-    @media (orientation: landscape) and (max-height: 600px) {
-      .header {
-        padding: 10px 15px;
+    /* Responsive Anpassungen für sehr kleine Geräte */
+    @media (max-width: 600px) {
+      #main {
+        margin: 10px;
+        padding: 15px 10px;
       }
-
+      
       .title {
-        font-size: 1.4rem;
+        font-size: 2rem;
       }
-
-      .subtitle {
-        font-size: 0.6rem;
-      }
-
+      
       #display {
-        font-size: 3.5rem;
-        margin-bottom: 10px;
+        font-size: 5rem;
+        margin: 10px 0;
       }
-
+      
       #player {
-        font-size: 1.4rem;
+        font-size: 2.5rem;
         margin-bottom: 15px;
       }
-
-      .controls {
-        padding: 0 15px 10px;
-      }
-
+      
       .main-btn {
-        min-height: 60px;
+        padding: 18px;
         font-size: 1.2rem;
       }
-
+      
       #nextPlayerBtn {
-        min-height: 75px;
-        font-size: 1.8rem;
+        font-size: 2.5rem;
+        padding: 60px;
+        min-height: 80px;
       }
-
-      .sidebar-container {
-        max-height: 20vh;
-        padding: 10px 15px;
+      
+      #startBtn {
+        font-size: 2.2rem;
+        padding: 20px;
       }
-
+      
       #sidebar {
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-        gap: 8px;
+        grid-template-columns: 1fr 1fr;
       }
-
+      
       .player-time {
-        padding: 8px;
         font-size: 0.8rem;
+        padding: 8px;
+      }
+      
+      /* Bearbeitungsmodus Anpassungen für Mobile */
+      #editPanel {
+        padding: 15px;
+      }
+      
+      .player-edit-container {
+        padding: 12px;
+      }
+      
+      .player-name-input, .time-input {
+        font-size: 0.9rem;
+        padding: 8px;
+      }
+      
+      .edit-btn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
       }
     }
 
-    /* Very small screens */
-    @media (max-width: 350px) {
+    @media (max-width: 400px) {
       .title {
-        font-size: 1.6rem;
+        font-size: 1.8rem;
       }
-
+      
       #display {
-        font-size: 3.8rem;
+        font-size: 2.8rem;
       }
-
+      
       #player {
-        font-size: 1.6rem;
+        font-size: 1.1rem;
       }
-
-      .quick-adjust-btn {
-        font-size: 0.9rem;
-        padding: 12px 8px;
+      
+      .main-btn {
+        padding: 16px;
+        font-size: 1.1rem;
       }
-
+      
+      #nextPlayerBtn, #startBtn {
+        font-size: 2rem;
+        padding: 18px;
+      }
+      
       #sidebar {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Landscape-Optimierung */
+    @media (max-height: 500px) and (orientation: landscape) {
+      #main {
+        max-width: 95%;
+        margin: 10px auto;
+        padding: 15px;
+      }
+      
+      .title-container {
+        margin-bottom: 10px;
+      }
+      
+      #display {
+        font-size: 2.5rem;
+        margin: 10px 0;
+      }
+      
+      #player {
+        margin-bottom: 10px;
+      }
+      
+      #mainButtonContainer {
+        margin: 15px 0;
+      }
+      
+      #sidebar {
+        grid-template-columns: repeat(4, 1fr);
+      }
+      
+      #nextPlayerBtn {
+        min-height: 70px;
       }
     }
   </style>
 </head>
 <body>
 
-<!-- Header -->
-<div class="header">
-  <h1 class="title">ESCAPE THE TARTARUS</h1>
-  <div class="subtitle">TIMER</div>
-</div>
+<div id="main">
+  <div class="title-container">
+    <h1 class="title">ESCAPE THE TARTARUS</h1>
+    <div class="subtitle">TIMER</div>
+  </div>
 
-<!-- Main Timer Area -->
-<div class="timer-section">
   <div id="display">00:00.00</div>
   <div id="player">Spieler 1</div>
-</div>
 
-<!-- Controls -->
-<div class="controls">
-  <div id="mainButtonContainer">
+  <div id="mainButtonContainer" style="display:none;">
     <button id="nextPlayerBtn" class="main-btn" onclick="stopAndNext()">
-      <i class="fas fa-forward"></i>
-      <span>Weiter</span>
+      <i class="fas fa-forward"></i> <!-- Überspringen (Skip) -->
     </button>
 
     <button id="pauseResumeBtn" class="main-btn" onclick="togglePause()">
-      <i class="fas fa-pause"></i>
-      <span>Pause</span>
+      <i class="fas fa-pause"></i> <!-- Pause -->
     </button>
-
+    
     <div class="quick-adjust-container">
       <button class="quick-adjust-btn add" onclick="adjustCurrentPlayerTime(5)">
-        <span>+5s</span>
-        <small>hinzufügen</small>
+        <span>+5s</span> für aktuellen Spieler
       </button>
       <button class="quick-adjust-btn subtract" onclick="adjustCurrentPlayerTime(-5)">
-        <span>-5s</span>
-        <small>abziehen</small>
+        <span>-5s</span> für aktuellen Spieler
       </button>
     </div>
   </div>
+  <button id="startBtn" class="main-btn" onclick="startGame()">START</button>
 
-  <button id="startBtn" class="main-btn" onclick="startGame()">
-    <i class="fas fa-play"></i>
-    <span>START</span>
-  </button>
-</div>
-
-<!-- Player Sidebar -->
-<div class="sidebar-container">
   <div id="sidebar"></div>
+  <div id="editPanel"></div>
 </div>
 
-<!-- Edit Menu Toggle -->
 <button id="editMenuToggle">☰</button>
-
-<!-- Edit Menu -->
 <div id="editMenu">
-  <button class="menu-btn" onclick="toggleEditMode()">
-    <span>✏️</span>
-    <span>Einstellungen</span>
-  </button>
-  <button class="menu-btn" onclick="resetGame()">
-    <span>🔁</span>
-    <span>Zurücksetzen</span>
-  </button>
-  <button class="menu-btn" onclick="window.location.href='/index.html'">
-    <span>🏠</span>
-    <span>Hauptmenü</span>
-  </button>
-</div>
-
-<!-- Edit Panel -->
-<div id="editPanel">
-  <div class="edit-header">
-    <h3>⚙️ Spieler Einstellungen</h3>
-    <p>Spieler bearbeiten und Timer anpassen</p>
-  </div>
-  <div id="playerList"></div>
-  <div class="edit-buttons">
-    <button class="edit-btn" onclick="addPlayer()">
-      <span>➕</span>
-      <span>Spieler hinzufügen</span>
-    </button>
-    <button class="edit-btn" onclick="saveEdit()">
-      <span>✅</span>
-      <span>Speichern & Schließen</span>
-    </button>
-    <button class="edit-btn secondary" onclick="toggleEditMode()">
-      <span>❌</span>
-      <span>Abbrechen</span>
-    </button>
-  </div>
+  <button class="menu-btn" onclick="toggleEditMode()">✏️ Einstellungen</button>
+  <button class="menu-btn" onclick="resetGame()">🔁 Zurücksetzen</button>
+  <button class="menu-btn" onclick="window.location.href='/index.html'">🏠 Hauptmenü</button>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
@@ -787,18 +790,20 @@
 
   function updateDisplays() {
     document.getElementById("display").textContent = formatTime(players[currentPlayer].time, true);
-
+    
     const playerElement = document.getElementById("player");
     playerElement.textContent = players[currentPlayer].name;
+    // Alte Farbklassen entfernen
     playerElement.className = '';
+    // Neue Farbklasse hinzufügen
     playerElement.classList.add(`player-color-${currentPlayer % 6}`);
-
+    
     const sidebar = document.getElementById("sidebar");
     sidebar.innerHTML = "";
     players.forEach((p, i) => {
       const div = document.createElement("div");
       div.className = "player-time" + (i === currentPlayer ? " active" : "");
-      div.innerHTML = `<strong>${p.name}</strong><br>${formatTime(p.time)}`;
+      div.textContent = `${p.name}: ${formatTime(p.time)}`;
       div.setAttribute("data-player", i % 6);
       sidebar.appendChild(div);
     });
@@ -832,17 +837,17 @@
 
   function togglePause() {
     if (!gameStarted) return;
-
+    
     isPaused = !isPaused;
-
+    
     if (isPaused) {
       clearInterval(interval);
       interval = null;
-      pauseBtn.innerHTML = '<i class="fas fa-play"></i><span>Fortsetzen</span>';
+      pauseBtn.innerHTML = '<i class="fas fa-play"></i>';
     } else {
       lastTimestamp = performance.now();
       startTimer();
-      pauseBtn.innerHTML = '<i class="fas fa-pause"></i><span>Pause</span>';
+      pauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
     }
   }
 
@@ -852,7 +857,7 @@
       currentPlayer = (currentPlayer + 1) % players.length;
       attempts++;
       if (attempts > players.length) {
-        alert("🔥 Alle Seelen haben ihre Zeit in Tartarus verloren! 🔥");
+        alert("Alle Spieler haben keine Zeit mehr!");
         return;
       }
     } while (players[currentPlayer].time <= 0);
@@ -868,10 +873,9 @@
     players.forEach(p => p.time = 60000);
     currentPlayer = 0;
     updateDisplays();
-    document.getElementById("startBtn").style.display = "flex";
+    document.getElementById("startBtn").style.display = "block";
     document.getElementById("mainButtonContainer").style.display = "none";
-    pauseBtn.innerHTML = '<i class="fas fa-pause"></i><span>Pause</span>';
-    closeSidebar();
+    pauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
   }
 
   function startGame() {
@@ -879,45 +883,33 @@
     document.getElementById("startBtn").style.display = "none";
     document.getElementById("mainButtonContainer").style.display = "flex";
     startTimer();
-    closeSidebar();
   }
 
   function toggleEditMode() {
     editMode = !editMode;
-    editPanel.style.display = editMode ? "flex" : "none";
+    editPanel.style.display = editMode ? "block" : "none";
 
     if (editMode && gameStarted) {
       isPaused = true;
       clearInterval(interval);
       interval = null;
-      pauseBtn.innerHTML = '<i class="fas fa-play"></i><span>Fortsetzen</span>';
+      pauseBtn.innerHTML = '<i class="fas fa-play"></i>';
     }
 
     if (!editMode) {
       updateDisplays();
-      closeSidebar();
       return;
     }
 
-    closeSidebar();
     editPanel.innerHTML = `
-      <div class="edit-header">
-        <h3>⚙️ Spieler Einstellungen</h3>
-        <p>Spieler bearbeiten und Timer anpassen</p>
-      </div>
+      <h3>Spieler bearbeiten</h3>
       <div id="playerList"></div>
       <div class="edit-buttons">
         <button class="edit-btn" onclick="addPlayer()">
-          <span>➕</span>
-          <span>Spieler hinzufügen</span>
+          <span>➕</span> Spieler hinzufügen
         </button>
         <button class="edit-btn" onclick="saveEdit()">
-          <span>✅</span>
-          <span>Speichern & Schließen</span>
-        </button>
-        <button class="edit-btn secondary" onclick="toggleEditMode()">
-          <span>❌</span>
-          <span>Abbrechen</span>
+          <span>✅</span> Speichern
         </button>
       </div>
     `;
@@ -926,15 +918,15 @@
     players.forEach((player, index) => {
       const minutes = Math.floor(player.time / 60000);
       const seconds = Math.floor((player.time % 60000) / 1000);
-
+      
       const playerContainer = document.createElement("div");
       playerContainer.className = "player-edit-container";
       playerContainer.setAttribute("data-id", index);
-
+      
       playerContainer.innerHTML = `
         <div class="player-edit-header">
           <input type="text" class="player-name-input" value="${player.name}" placeholder="Spielername">
-          <button class="remove-btn" onclick="removePlayer(${index})" title="Spieler entfernen">
+          <button class="remove-btn" onclick="removePlayer(${index})">
             <span>🗑️</span>
           </button>
         </div>
@@ -945,17 +937,11 @@
           <input type="number" class="time-input" min="0" max="59" value="${seconds}" placeholder="Sek">
         </div>
         <div class="time-adjust-buttons">
-          <div class="time-adjust-btn add" onclick="adjustPlayerTime(${index}, 30)">
-            <span>+30s</span>
+          <div class="time-adjust-btn add" onclick="adjustPlayerTime(${index}, 5)">
+            <span>+5s</span>
           </div>
-          <div class="time-adjust-btn subtract" onclick="adjustPlayerTime(${index}, -30)">
-            <span>-30s</span>
-          </div>
-          <div class="time-adjust-btn add" onclick="adjustPlayerTime(${index}, 60)">
-            <span>+1m</span>
-          </div>
-          <div class="time-adjust-btn subtract" onclick="adjustPlayerTime(${index}, -60)">
-            <span>-1m</span>
+          <div class="time-adjust-btn subtract" onclick="adjustPlayerTime(${index}, -5)">
+            <span>-5s</span>
           </div>
         </div>
       `;
@@ -976,83 +962,85 @@
     const timeInputs = document.querySelectorAll(`.player-edit-container[data-id="${playerIndex}"] .time-input`);
     const minutesInput = timeInputs[0];
     const secondsInput = timeInputs[1];
-
+    
     let totalSeconds = (parseInt(minutesInput.value) || 0) * 60 + (parseInt(secondsInput.value) || 0);
     totalSeconds += seconds;
-
+    
+    // Nicht unter 0 fallen lassen
     totalSeconds = Math.max(0, totalSeconds);
-
+    
     const newMinutes = Math.floor(totalSeconds / 60);
     const newSeconds = totalSeconds % 60;
-
+    
     minutesInput.value = newMinutes;
     secondsInput.value = newSeconds;
-
+    
+    // Visuelles Feedback
     const container = document.querySelector(`.player-edit-container[data-id="${playerIndex}"]`);
     container.style.transform = "scale(1.02)";
-    container.style.boxShadow = seconds > 0
-            ? "0 0 12px rgba(100, 255, 100, 0.6)"
-            : "0 0 12px rgba(255, 100, 100, 0.6)";
-
+    container.style.boxShadow = seconds > 0 
+      ? "0 0 8px rgba(100, 255, 100, 0.5)" 
+      : "0 0 8px rgba(255, 100, 100, 0.5)";
+    
     setTimeout(() => {
       container.style.transform = "";
       container.style.boxShadow = "";
-    }, 400);
+    }, 300);
   }
 
   function adjustCurrentPlayerTime(seconds) {
     if (!gameStarted) return;
-
+    
     players[currentPlayer].time += seconds * 1000;
-
+    
+    // Nicht unter 0 fallen lassen
     if (players[currentPlayer].time < 0) {
       players[currentPlayer].time = 0;
     }
-
+    
     updateDisplays();
-
+    
+    // Visuelles Feedback
     const display = document.getElementById("display");
     display.style.color = seconds > 0 ? "#a1ffa1" : "#ffa1a1";
-    display.style.transform = "scale(1.05)";
-
+    display.style.transform = "scale(1.03)";
+    
     setTimeout(() => {
       display.style.color = "";
       display.style.transform = "";
-    }, 400);
+    }, 300);
   }
 
   function addPlayer() {
-    const defaultTime = 60000;
+    const defaultTime = 60000; // 1 Minute
     players.push({ name: `Spieler ${players.length + 1}`, time: defaultTime });
     toggleEditMode();
-    toggleEditMode();
+    toggleEditMode(); // Refresh the view
   }
 
   function removePlayer(index) {
     if (players.length > 2) {
       players.splice(index, 1);
-      if (currentPlayer >= players.length) {
-        currentPlayer = 0;
-      }
       toggleEditMode();
-      toggleEditMode();
+      toggleEditMode(); // Refresh the view
     } else {
-      alert("⚠️ Mindestens zwei Seelen müssen im Tartarus verweilen!");
+      alert("Mindestens zwei Spieler müssen vorhanden sein.");
     }
   }
 
   function saveEdit() {
+    // Spielernamen und Zeiten aktualisieren
     const playerElements = document.querySelectorAll('.player-edit-container');
-
+    
     playerElements.forEach((element, index) => {
       const nameInput = element.querySelector('.player-name-input');
       const minuteInput = element.querySelectorAll('.time-input')[0];
       const secondInput = element.querySelectorAll('.time-input')[1];
-
-      players[index].name = nameInput.value || `Spieler ${index + 1}`;
+      
+      players[index].name = nameInput.value;
       players[index].time = (parseInt(minuteInput.value || 0) * 60000) + (parseInt(secondInput.value || 0) * 1000);
     });
-
+    
     toggleEditMode();
     updateDisplays();
   }
@@ -1061,34 +1049,12 @@
     document.getElementById("editMenu").classList.toggle("show");
   }
 
-  function closeSidebar() {
-    document.getElementById("editMenu").classList.remove("show");
-  }
-
-  // Event Listeners
+  // Initialisierung
   document.getElementById("editMenuToggle").addEventListener("click", toggleSidebar);
 
-  // Close sidebar when clicking outside
-  document.addEventListener("click", function(event) {
-    const editMenu = document.getElementById("editMenu");
-    const editToggle = document.getElementById("editMenuToggle");
-
-    if (!editMenu.contains(event.target) && !editToggle.contains(event.target)) {
-      closeSidebar();
-    }
-  });
-
-  // Prevent scrolling when touching the timer area
-  document.addEventListener('touchmove', function(e) {
-    if (e.target.closest('.timer-section') || e.target.closest('.controls')) {
-      e.preventDefault();
-    }
-  }, { passive: false });
-
-  // Touch optimizations
+  // Touch-Optimierungen
   document.addEventListener('touchstart', function() {}, {passive: true});
 
-  // Initialize
   updateDisplays();
 </script>
 </body>
