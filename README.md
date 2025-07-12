@@ -1,136 +1,136 @@
-# Escape from Tartarus - Vierpersonen-Schachuhr ⏱️
+# Escape from Tartarus - Four-Player Chess Clock ⏱️
 
-Eine webbasierte Vierpersonen-Schachuhr für das Brettspiel "Escape from Tartarus" - präzises Zeitmanagement für euer episches Unterwelt-Abenteuer.
+A web-based four-player chess clock for the board game "Escape from Tartarus" - precise time management for your epic underworld adventure.
 
 ## Motivation
 
-Bei der Entwicklung von "Escape from Tartarus" habe ich gemerkt, dass das zeitbasierte Gameplay eine präzise Zeitmessung erfordert. Standard-Schachuhren sind für vier Spieler ungeeignet, und Handy-Timer sind umständlich zu bedienen. Deshalb entwickelte ich diese speziell angepasste Web-App.
+During the development of "Escape from Tartarus," I realized that the time-based gameplay requires precise timekeeping. Standard chess clocks are unsuitable for four players, and phone timers are cumbersome to operate. That's why I developed this specially adapted web app.
 
-## Was macht dieses Projekt besonders?
+## What makes this project special?
 
-- **Vier separate Timer** - Gleichzeitige Zeitnahme für alle Spieler
-- **Spielspezifische Features** - Angepasst an "Escape from Tartarus" Regeln
-- **Einfache Bedienung** - Große Buttons, klare Anzeigen
-- **Responsive Design** - Funktioniert auf Desktop, Tablet und Smartphone
-- **Keine Installation** - Direkt im Browser nutzbar
-- **Integrierte Spielanleitung** - Regeln immer griffbereit
+- **Four separate timers** - Simultaneous timekeeping for all players
+- **Game-specific features** - Adapted to "Escape from Tartarus" rules
+- **Easy operation** - Large buttons, clear displays
+- **Responsive design** - Works on desktop, tablet, and smartphone
+- **No installation** - Usable directly in the browser
+- **Integrated game instructions** - Rules always at hand
 
-## Inhaltsverzeichnis
+## Table of Contents
 
-- [Verwendung](#verwendung)
+- [Usage](#usage)
 - [Features](#features)
-- [Spielregeln-Schnellübersicht](#spielregeln-schnellübersicht)
-- [Technische Details](#technische-details)
-- [Lizenz](#lizenz)
+- [Game Rules Quick Overview](#game-rules-quick-overview)
+- [Technical Details](#technical-details)
+- [License](#license)
 - [Credits](#credits)
 - [Links](#links)
 
-## Verwendung
+## Usage
 
-### Schnellstart
+### Quick Start
 
-1. **Website öffnen** - Gehe zu https://escapethetartaros.netlify.app
-2. **Timer einstellen** - Wähle die gewünschte Startzeit für jeden Spieler
-3. **Spiel starten** - Klicke auf "Start" wenn euer Brettspiel beginnt
-4. **Timer wechseln** - Klicke auf "Nächster Spieler" nach jedem Zug
-5. **Pausieren** - Bei Unterbrechungen oder Regelklärungen
+1. **Open website** - Go to https://escapethetartaros.netlify.app
+2. **Set timers** - Choose the desired start time for each player
+3. **Start game** - Click "Start" when your board game begins
+4. **Switch timers** - Click "Next Player" after each turn
+5. **Pause** - During interruptions or rule clarifications
 
-### Spielablauf mit Timer
+### Game Flow with Timer
 
 ```
-Spieler 1 macht Zug → Timer pausieren → Aktion ausführen → Timer von Spieler 2 starten
+Player 1 makes move → Pause timer → Execute action → Start Player 2's timer
 ```
 
-### Wichtige Zeitlimits im Spiel
+### Important Time Limits in the Game
 
-- **1 Minute** - Alle Spieler müssen Charons Schiff erreichen
-- **Individual** - Jeder Spieler hat seine eigene Bedenkzeit
-- **Pausen** - Für Minispiele und Regelklärungen
+- **1 Minute** - All players must reach Charon's ship
+- **Individual** - Each player has their own thinking time
+- **Pauses** - For mini-games and rule clarifications
 
 ## Features
 
-### Timer-Funktionen
+### Timer Functions
 
-- ⏰ **Vier separate Timer** mit individuellen Einstellungen
-- ⏸️ **Pause/Resume** für alle Timer gleichzeitig
-- 🔄 **Automatischer Wechsel** zwischen Spielern
-- 🎨 **Farbkodierung** für jeden Spieler
+- ⏰ **Four separate timers** with individual settings
+- ⏸️ **Pause/Resume** for all timers simultaneously
+- 🔄 **Automatic switching** between players
+- 🎨 **Color coding** for each player
 
-## Spielregeln-Schnellübersicht
+## Game Rules Quick Overview
 
-**Escape from Tartarus** ist ein strategisches Brettspiel für 2-4 Spieler.
+**Escape from Tartarus** is a strategic board game for 2-4 players.
 
-### Ziel
+### Objective
 
-Die meisten Siegpunkte sammeln, um in Elysion zu bleiben und nicht in den Tartaros zurückgeschickt zu werden.
+Collect the most victory points to stay in Elysion and not be sent back to Tartarus.
 
-### Die drei Ebenen
+### The Three Realms
 
-1. **Tartaros** (Rot) - Finstere Gründe der Verdammten
-2. **Asphodel** (Grau) - Öde Aschefelder der Vergessenen
-3. **Elysion** (Grün) - Paradies der Helden
+1. **Tartarus** (Red) - Dark depths of the damned
+2. **Asphodel** (Gray) - Desolate ash fields of the forgotten
+3. **Elysion** (Green) - Paradise of heroes
 
-### Spielablauf
+### Game Flow
 
-1. Charakterkarte verdeckt ziehen
-2. Im Uhrzeigersinn bewegen (Sternschritt)
-3. Ereignis- oder Itemfelder aktivieren
-4. Charons Schiff innerhalb einer Minute erreichen
-5. Minispiele zwischen den Ebenen
-6. Siegpunkte auszählen
+1. Draw character card face down
+2. Move clockwise (star step)
+3. Activate event or item fields
+4. Reach Charon's ship within one minute
+5. Mini-games between realms
+6. Count victory points
 
-### Siegpunkte erhalten durch:
+### Earn Victory Points Through:
 
-- ⚔️ Meistern von Ereignisfeldern
-- 🗝️ Erkunden von Dungeons
-- 🎲 Gewinnen von Minispielen
-- 🌟 Bonuspunkte für Leistungen
+- ⚔️ Mastering event fields
+- 🗝️ Exploring dungeons
+- 🎲 Winning mini-games
+- 🌟 Bonus points for achievements
 
-## Technische Details
+## Technical Details
 
-### Technologie-Stack
+### Technology Stack
 
 - **Frontend**: HTML5, CSS3, JavaScript (Vanilla)
 - **Hosting**: Netlify
 - **Responsive**: CSS Grid & Flexbox
-- **Timer**: JavaScript `setInterval()`
+- **Timer**: JavaScript
 
 ### Development
 
 ```bash
-# Repository forken
-# Clone dein Fork
-git clone https://github.com/[dein-username]/escape-tartarus-timer.git
+# Fork repository
+# Clone your fork
+git clone https://github.com/[your-username]/escape-tartarus-timer.git
 
-# Branch für dein Feature erstellen
-git checkout -b feature/neue-funktion
+# Create branch for your feature
+git checkout -b feature/new-function
 
-# Änderungen committen
-git commit -m "Neue Funktion hinzugefügt"
+# Commit changes
+git commit -m "Added new function"
 
-# Push und Pull Request erstellen
-git push origin feature/neue-funktion
+# Push and create pull request
+git push origin feature/new-function
 ```
 
-## Lizenz
+## License
 
-Dieses Projekt ist unter der MIT-Lizenz veröffentlicht. Siehe [LICENSE](LICENSE) für Details.
+This project is published under the MIT License. See [LICENSE](LICENSE) for details.
 
 ```
-MIT License - Du kannst diesen Code frei verwenden, modifizieren und verteilen.
+MIT License - You can freely use, modify, and distribute this code.
 ```
 
 ## Credits
 
-**Entwicklung**: [Adrian Kranyak](https://github.com/AKAu101)  
-**Inspiration**: Das Brettspiel "Escape from Tartarus" und dessen zeitbasiertes Gameplay
+**Development**: [Adrian Kranyak](https://github.com/AKAu101)  
+**Inspiration**: The board game "Escape from Tartarus" and its time-based gameplay
 
 ---
 
 ## Links
 
-- **Webseite**: https://escapethetartaros.netlify.app
+- **Website**: https://escapethetartaros.netlify.app
 
 ---
 
-**Viel Erfolg beim Entkommen aus dem Tartaros! 🏛️⚡**
+**Good luck escaping from Tartarus! 🏛️⚡**
