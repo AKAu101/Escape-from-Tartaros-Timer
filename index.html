@@ -4,10 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Escape from Tartaros</title>
+
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
     <style>
+        /* ==================== CSS VARIABLEN ==================== */
         :root {
             --blood-red: #8B0000;
             --dark-red: #4A0000;
@@ -21,6 +25,7 @@
             --mist: rgba(255, 255, 255, 0.1);
         }
 
+        /* ==================== RESET & BASE STYLES ==================== */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -37,8 +42,50 @@
             min-height: 100vh;
         }
 
-        /* Animierte Hintergrund-Partikel */
-        .particles {
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ==================== ANIMATIONEN ==================== */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.7; }
+            50% { transform: translateY(-20px) rotate(180deg); opacity: 1; }
+        }
+
+        @keyframes flicker {
+            0% { opacity: 0.2; transform: scaleY(0.95) scaleX(0.9); }
+            100% { opacity: 0.4; transform: scaleY(1.05) scaleX(1.1); }
+        }
+
+        @keyframes shimmer {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-10px); }
+            60% { transform: translateX(-50%) translateY(-5px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        /* ==================== HINTERGRUND EFFEKTE ==================== */
+        .background-effects {
             position: fixed;
             top: 0;
             left: 0;
@@ -46,6 +93,14 @@
             height: 100%;
             pointer-events: none;
             z-index: -1;
+        }
+
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
         }
 
         .particle {
@@ -58,173 +113,189 @@
             animation: float 6s infinite ease-in-out;
         }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.7; }
-            50% { transform: translateY(-20px) rotate(180deg); opacity: 1; }
-        }
-
-        /* Flammende Säulen */
         .flame-column {
-            position: fixed;
+            position: absolute;
             width: 60px;
             height: 100vh;
-            background: linear-gradient(to top,
-            var(--fire-red) 0%,
-            var(--fire-orange) 30%,
-            transparent 70%);
+            background: linear-gradient(to top, var(--fire-red) 0%, var(--fire-orange) 30%, transparent 70%);
             opacity: 0.3;
-            z-index: -1;
             animation: flicker 3s infinite alternate;
         }
 
-        .flame-column.left {
+        .flame-column--left {
             left: 5%;
             animation-delay: 0s;
         }
 
-        .flame-column.right {
+        .flame-column--right {
             right: 5%;
             animation-delay: 1.5s;
         }
 
-        @keyframes flicker {
-            0% { opacity: 0.2; transform: scaleY(0.95) scaleX(0.9); }
-            100% { opacity: 0.4; transform: scaleY(1.05) scaleX(1.1); }
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 2rem;
+        /* ==================== HERO SECTION ==================== */
+        .hero {
+            min-height: 100vh;
             position: relative;
-            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background:
+                    radial-gradient(ellipse at center, rgba(139, 0, 0, 0.3) 0%, transparent 70%),
+                    linear-gradient(135deg, rgba(0,0,0,0.9) 0%, rgba(20,0,0,0.8) 100%);
+            overflow: hidden;
         }
 
-        header {
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                    url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="0.5" fill="rgba(244,228,193,0.1)"/><circle cx="80" cy="40" r="0.3" fill="rgba(244,228,193,0.05)"/><circle cx="40" cy="70" r="0.4" fill="rgba(244,228,193,0.08)"/></svg>');
+            animation: float 20s infinite linear;
+        }
+
+        .hero__content {
             text-align: center;
-            padding: 4rem 0;
+            z-index: 2;
             position: relative;
-            margin-bottom: 4rem;
+            max-width: 1200px;
+            padding: 2rem;
         }
 
-        .title-container {
-            position: relative;
-            display: inline-block;
-        }
-
-        h1 {
-            font-family: 'Cinzel Decorative', serif;
-            font-size: clamp(3rem, 8vw, 6rem);
-            font-weight: 900;
-            background: linear-gradient(45deg, var(--gold), var(--bronze), var(--gold));
-            background-size: 200% 200%;
+        .hero__title {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(3rem, 8vw, 8rem);
+            font-weight: 700;
+            background: linear-gradient(45deg, #d4af37, #f4e4c1, #d4af37);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            text-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+            text-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
             margin-bottom: 1rem;
-            letter-spacing: 4px;
-            animation: shimmer 4s ease-in-out infinite;
-            position: relative;
         }
 
-        @keyframes shimmer {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-
-        h1::before, h1::after {
-            content: "";
-            position: absolute;
-            top: 50%;
-            width: 100px;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--gold), transparent);
-        }
-
-        h1::before {
-            left: -120px;
-        }
-
-        h1::after {
-            right: -120px;
-        }
-
-        .tagline {
-            font-family: 'Cinzel', serif;
+        .hero__subtitle {
+            font-size: clamp(1.2rem, 3vw, 2rem);
+            margin-bottom: 2rem;
+            color: #c9a96e;
             font-style: italic;
-            font-size: clamp(1.2rem, 3vw, 1.8rem);
-            color: var(--bronze);
-            margin-bottom: 2rem;
-            text-shadow: 2px 2px 4px var(--shadow);
-            font-weight: 400;
+            font-family: 'Crimson Text', serif;
         }
 
-        .main-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4rem;
+        .hero__tagline {
+            font-size: clamp(1rem, 2.5vw, 1.5rem);
+            margin-bottom: 3rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            opacity: 0.9;
+            font-family: 'Crimson Text', serif;
         }
 
-        .hero-section {
-            background: linear-gradient(135deg,
-            rgba(139, 0, 0, 0.2) 0%,
-            rgba(0, 0, 0, 0.8) 50%,
-            rgba(47, 27, 105, 0.2) 100%);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            border-radius: 20px;
-            padding: 3rem;
-            max-width: 900px;
-            position: relative;
-            box-shadow:
-                    0 0 50px rgba(139, 0, 0, 0.3),
-                    inset 0 0 50px rgba(255, 215, 0, 0.1);
-        }
-
-        .hero-section::before {
-            content: "";
+        .hero__scroll-indicator {
             position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(45deg, var(--gold), var(--fire-red), var(--gold));
-            border-radius: 22px;
-            z-index: -1;
-            opacity: 0.3;
-            animation: border-glow 4s ease-in-out infinite alternate;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #d4af37;
+            animation: bounce 2s infinite;
         }
 
-        @keyframes border-glow {
-            0% { opacity: 0.2; }
-            100% { opacity: 0.4; }
+        /* ==================== VIDEO SECTION ==================== */
+        .video-section {
+            width: 100%;
+            max-width: 800px;
+            margin: 2rem auto 3rem auto;
+            z-index: 3;
         }
 
-        h2 {
-            font-family: 'Cinzel Decorative', serif;
-            color: var(--fire-red);
-            font-size: clamp(1.8rem, 4vw, 2.5rem);
-            margin-bottom: 2rem;
-            text-align: center;
-            font-weight: 700;
-            text-shadow:
-                    2px 2px 4px var(--shadow),
-                    0 0 15px rgba(220, 20, 60, 0.5);
-            letter-spacing: 1px;
+        .video-container {
+            position: relative;
+            background: linear-gradient(135deg, rgba(139, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.9) 50%, rgba(47, 27, 105, 0.2) 100%);
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
+            transition: all 0.3s ease;
         }
 
-        p {
-            margin-bottom: 1.5rem;
-            font-size: 1.2rem;
-            text-align: justify;
-            text-shadow: 1px 1px 2px var(--shadow);
-            line-height: 1.8;
+        .video-container:hover {
+            border-color: rgba(255, 215, 0, 0.6);
+            box-shadow: 0 0 50px rgba(255, 215, 0, 0.4);
+        }
+
+        .video-container__video {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 18px;
+            background: #000;
+        }
+
+        .video-container__overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            transition: opacity 0.3s ease;
+            border-radius: 18px;
+        }
+
+        .video-container__overlay--hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .video-play-btn {
+            background: linear-gradient(135deg, var(--gold), var(--bronze));
+            color: var(--shadow);
+            border: none;
+            border-radius: 50px;
+            padding: 1.5rem 3rem;
             font-family: 'Cinzel', serif;
-            font-weight: 400;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 0 var(--bronze), 0 15px 25px rgba(0, 0, 0, 0.5);
+            transform-style: preserve-3d;
         }
 
+        .video-play-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 12px 0 var(--bronze), 0 20px 35px rgba(0, 0, 0, 0.7), 0 0 25px rgba(255, 215, 0, 0.6);
+        }
+
+        .video-play-btn:active {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 5px 0 var(--bronze), 0 8px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .video-play-btn__icon {
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .video-play-btn__text {
+            font-size: 1.1rem;
+            letter-spacing: 0.5px;
+        }
+
+        /* ==================== BUTTONS ==================== */
         .cta-buttons {
             display: flex;
             gap: 2rem;
@@ -243,10 +314,7 @@
             border: none;
             border-radius: 15px;
             cursor: pointer;
-            box-shadow:
-                    0 8px 0 var(--dark-red),
-                    0 15px 25px rgba(0, 0, 0, 0.5),
-                    inset 0 2px 0 rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 0 var(--dark-red), 0 15px 25px rgba(0, 0, 0, 0.5), inset 0 2px 0 rgba(255, 255, 255, 0.2);
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
@@ -266,53 +334,65 @@
             transition: left 0.6s;
         }
 
-        .btn:hover::before {
-            left: 100%;
-        }
+        .btn:hover::before { left: 100%; }
 
         .btn:hover {
             transform: translateY(-5px) rotateX(10deg);
-            box-shadow:
-                    0 12px 0 var(--dark-red),
-                    0 20px 35px rgba(0, 0, 0, 0.7),
-                    0 0 20px rgba(255, 215, 0, 0.3);
+            box-shadow: 0 12px 0 var(--dark-red), 0 20px 35px rgba(0, 0, 0, 0.7), 0 0 20px rgba(255, 215, 0, 0.3);
         }
 
         .btn:active {
             transform: translateY(-2px) rotateX(5deg);
-            box-shadow:
-                    0 5px 0 var(--dark-red),
-                    0 8px 15px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 5px 0 var(--dark-red), 0 8px 15px rgba(0, 0, 0, 0.5);
         }
 
-        .btn-gold {
+        .btn--gold {
             background: linear-gradient(135deg, var(--gold), var(--bronze));
             color: var(--shadow);
-            box-shadow:
-                    0 8px 0 var(--bronze),
-                    0 15px 25px rgba(0, 0, 0, 0.5),
-                    inset 0 2px 0 rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 0 var(--bronze), 0 15px 25px rgba(0, 0, 0, 0.5), inset 0 2px 0 rgba(255, 255, 255, 0.3);
             font-weight: 700;
         }
 
-        .btn-gold:hover {
-            box-shadow:
-                    0 12px 0 var(--bronze),
-                    0 20px 35px rgba(0, 0, 0, 0.7),
-                    0 0 25px rgba(255, 215, 0, 0.6);
+        .btn--gold:hover {
+            box-shadow: 0 12px 0 var(--bronze), 0 20px 35px rgba(0, 0, 0, 0.7), 0 0 25px rgba(255, 215, 0, 0.6);
         }
 
+        /* ==================== MAIN CONTENT ==================== */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4rem;
+        }
+
+        .section-title {
+            font-family: 'Cinzel Decorative', serif;
+            color: var(--fire-red);
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            margin-bottom: 2rem;
+            text-align: center;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px var(--shadow), 0 0 15px rgba(220, 20, 60, 0.5);
+            letter-spacing: 1px;
+        }
+
+        .content-text {
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+            text-align: justify;
+            text-shadow: 1px 1px 2px var(--shadow);
+            line-height: 1.8;
+            font-family: 'Cinzel', serif;
+            font-weight: 400;
+        }
+
+        /* ==================== FEATURES SECTION ==================== */
         .features-section {
             width: 100%;
             margin-top: 4rem;
         }
 
-        .features-title {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .game-features {
+        .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
@@ -321,10 +401,7 @@
         }
 
         .feature-card {
-            background: linear-gradient(135deg,
-            rgba(139, 0, 0, 0.1) 0%,
-            rgba(0, 0, 0, 0.7) 50%,
-            rgba(47, 27, 105, 0.1) 100%);
+            background: linear-gradient(135deg, rgba(139, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.7) 50%, rgba(47, 27, 105, 0.1) 100%);
             backdrop-filter: blur(8px);
             border: 1px solid rgba(255, 215, 0, 0.2);
             border-radius: 20px;
@@ -346,19 +423,15 @@
             transition: left 0.8s;
         }
 
-        .feature-card:hover::before {
-            left: 100%;
-        }
+        .feature-card:hover::before { left: 100%; }
 
         .feature-card:hover {
             transform: translateY(-10px) scale(1.02);
-            box-shadow:
-                    0 20px 40px rgba(139, 0, 0, 0.3),
-                    0 0 30px rgba(255, 215, 0, 0.2);
+            box-shadow: 0 20px 40px rgba(139, 0, 0, 0.3), 0 0 30px rgba(255, 215, 0, 0.2);
             border-color: rgba(255, 215, 0, 0.5);
         }
 
-        .feature-icon {
+        .feature-card__icon {
             font-size: 3rem;
             margin-bottom: 1.5rem;
             display: block;
@@ -366,12 +439,7 @@
             animation: pulse 2s infinite ease-in-out;
         }
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-
-        .feature-card h3 {
+        .feature-card__title {
             color: var(--gold);
             margin-bottom: 1rem;
             font-family: 'Cinzel', serif;
@@ -379,23 +447,13 @@
             font-weight: 600;
         }
 
-        .feature-card p {
+        .feature-card__text {
             font-size: 1.1rem;
             text-align: center;
             margin-bottom: 0;
         }
 
-        footer {
-            text-align: center;
-            margin-top: 6rem;
-            padding: 3rem 0;
-            border-top: 1px solid rgba(255, 215, 0, 0.3);
-            font-size: 0.9rem;
-            color: var(--bronze);
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent);
-        }
-
-        /* Modal Verbesserungen */
+        /* ==================== MODAL ==================== */
         .modal {
             display: none;
             position: fixed;
@@ -410,11 +468,8 @@
             padding: 2rem;
         }
 
-        .modal-content {
-            background: linear-gradient(135deg,
-            rgba(139, 0, 0, 0.2) 0%,
-            rgba(0, 0, 0, 0.9) 50%,
-            rgba(47, 27, 105, 0.2) 100%);
+        .modal__content {
+            background: linear-gradient(135deg, rgba(139, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.9) 50%, rgba(47, 27, 105, 0.2) 100%);
             backdrop-filter: blur(15px);
             border: 2px solid var(--gold);
             border-radius: 20px;
@@ -426,7 +481,7 @@
             box-shadow: 0 0 50px rgba(255, 215, 0, 0.3);
         }
 
-        .close-modal {
+        .modal__close {
             position: absolute;
             top: 1.5rem;
             right: 2rem;
@@ -437,7 +492,7 @@
             font-weight: bold;
         }
 
-        .close-modal:hover {
+        .modal__close:hover {
             color: var(--gold);
             transform: scale(1.2);
             text-shadow: 0 0 10px var(--gold);
@@ -447,7 +502,7 @@
             margin-bottom: 2.5rem;
         }
 
-        .rules-section h3 {
+        .rules-section__title {
             color: var(--gold);
             margin-bottom: 1rem;
             border-bottom: 2px solid var(--blood-red);
@@ -456,67 +511,83 @@
             font-size: 1.3rem;
         }
 
-        .rules-section h4 {
+        .rules-section__subtitle {
             color: var(--bronze);
             margin: 1rem 0 0.5rem;
             font-family: 'Cinzel', serif;
         }
 
-        .rules-section ul {
+        .rules-section__list {
             padding-left: 1.5rem;
             margin-bottom: 1rem;
         }
 
-        .rules-section li {
+        .rules-section__list-item {
             margin-bottom: 0.5rem;
             line-height: 1.6;
         }
 
-        /* Responsive Design */
+        /* ==================== FOOTER ==================== */
+        .footer {
+            text-align: center;
+            margin-top: 6rem;
+            padding: 3rem 0;
+            border-top: 1px solid rgba(255, 215, 0, 0.3);
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent);
+        }
+
+        .footer__title {
+            color: var(--gold);
+            font-family: 'Cinzel', serif;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .footer__creators {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .footer__subtitle {
+            font-style: italic;
+            opacity: 0.8;
+            font-size: 0.95rem;
+            text-align: center;
+            color: var(--bronze);
+        }
+
+        /* ==================== RESPONSIVE DESIGN ==================== */
         @media (max-width: 768px) {
             .container {
                 padding: 1rem;
             }
 
-            header {
-                padding: 2rem 0;
-                margin-bottom: 2rem;
-            }
-
-            h1 {
+            .hero__title {
                 font-size: clamp(2.5rem, 10vw, 4rem);
                 letter-spacing: 2px;
             }
 
-            h1::before, h1::after {
-                display: none;
-            }
-
-            .tagline {
+            .hero__tagline {
                 font-size: clamp(1rem, 4vw, 1.4rem);
                 margin-bottom: 1.5rem;
                 padding: 0 1rem;
             }
 
-            .hero-section {
-                padding: 2rem 1.5rem;
-                border-radius: 15px;
-                margin: 0 0.5rem;
-            }
-
-            h2 {
+            .section-title {
                 font-size: clamp(1.5rem, 6vw, 2rem);
                 margin-bottom: 1.5rem;
             }
 
-            p {
+            .content-text {
                 font-size: 1.1rem;
                 margin-bottom: 1.2rem;
                 text-align: left;
                 line-height: 1.7;
             }
 
-            .game-features {
+            .features-grid {
                 grid-template-columns: 1fr;
                 gap: 1.5rem;
                 margin: 0 0.5rem;
@@ -527,11 +598,11 @@
                 border-radius: 15px;
             }
 
-            .feature-card h3 {
+            .feature-card__title {
                 font-size: 1.2rem;
             }
 
-            .feature-card p {
+            .feature-card__text {
                 font-size: 1rem;
             }
 
@@ -556,12 +627,7 @@
                 margin-top: 3rem;
             }
 
-            .features-title {
-                margin-bottom: 2rem;
-                padding: 0 1rem;
-            }
-
-            footer {
+            .footer {
                 margin-top: 4rem;
                 padding: 2rem 1rem;
             }
@@ -572,32 +638,22 @@
                 padding: 0.5rem;
             }
 
-            header {
-                padding: 1.5rem 0;
-            }
-
-            h1 {
+            .hero__title {
                 font-size: clamp(2rem, 12vw, 3rem);
                 letter-spacing: 1px;
             }
 
-            .tagline {
+            .hero__tagline {
                 font-size: clamp(0.9rem, 5vw, 1.2rem);
                 padding: 0 0.5rem;
             }
 
-            .hero-section {
-                padding: 1.5rem 1rem;
-                margin: 0 0.25rem;
-                border-radius: 12px;
-            }
-
-            h2 {
+            .section-title {
                 font-size: clamp(1.3rem, 7vw, 1.8rem);
                 margin-bottom: 1rem;
             }
 
-            p {
+            .content-text {
                 font-size: 1rem;
                 margin-bottom: 1rem;
                 line-height: 1.6;
@@ -608,17 +664,17 @@
                 border-radius: 12px;
             }
 
-            .feature-icon {
+            .feature-card__icon {
                 font-size: 2.5rem;
                 margin-bottom: 1rem;
             }
 
-            .feature-card h3 {
+            .feature-card__title {
                 font-size: 1.1rem;
                 margin-bottom: 0.8rem;
             }
 
-            .feature-card p {
+            .feature-card__text {
                 font-size: 0.95rem;
             }
 
@@ -628,60 +684,43 @@
                 border-radius: 10px;
             }
 
-            .game-features {
+            .features-grid {
                 margin: 0 0.25rem;
                 gap: 1.2rem;
             }
 
-            .features-title {
-                padding: 0 0.5rem;
-                margin-bottom: 1.5rem;
-            }
-
-            .modal-content {
+            .modal__content {
                 padding: 2rem 1.5rem;
                 margin: 1rem 0.5rem;
                 border-radius: 15px;
             }
 
-            .close-modal {
+            .modal__close {
                 top: 1rem;
                 right: 1.5rem;
                 font-size: 2rem;
             }
 
-            .rules-section h3 {
+            .rules-section__title {
                 font-size: 1.2rem;
             }
 
-            .rules-section p,
-            .rules-section li {
-                font-size: 0.95rem;
-                line-height: 1.5;
-            }
-
-            footer {
+            .footer {
                 margin-top: 3rem;
                 padding: 1.5rem 0.5rem;
                 font-size: 0.85rem;
             }
         }
 
-        /* Touch-optimierte Verbesserungen */
+        /* ==================== TOUCH OPTIMIERUNGEN ==================== */
         @media (hover: none) and (pointer: coarse) {
             .btn:hover {
                 transform: none;
-                box-shadow:
-                        0 8px 0 var(--dark-red),
-                        0 15px 25px rgba(0, 0, 0, 0.5),
-                        inset 0 2px 0 rgba(255, 255, 255, 0.2);
+                box-shadow: 0 8px 0 var(--dark-red), 0 15px 25px rgba(0, 0, 0, 0.5), inset 0 2px 0 rgba(255, 255, 255, 0.2);
             }
 
-            .btn-gold:hover {
-                box-shadow:
-                        0 8px 0 var(--bronze),
-                        0 15px 25px rgba(0, 0, 0, 0.5),
-                        inset 0 2px 0 rgba(255, 255, 255, 0.3);
+            .btn--gold:hover {
+                box-shadow: 0 8px 0 var(--bronze), 0 15px 25px rgba(0, 0, 0, 0.5), inset 0 2px 0 rgba(255, 255, 255, 0.3);
             }
 
             .feature-card:hover {
@@ -690,7 +729,6 @@
                 border-color: rgba(255, 215, 0, 0.2);
             }
 
-            /* Touch-feedback für Buttons */
             .btn:active {
                 transform: scale(0.98);
                 transition: transform 0.1s ease;
@@ -701,26 +739,8 @@
             }
         }
 
-        /* Landscape Optimierung für Smartphones */
+        /* ==================== LANDSCAPE OPTIMIERUNG ==================== */
         @media screen and (max-height: 500px) and (orientation: landscape) {
-            header {
-                padding: 1rem 0;
-                margin-bottom: 1rem;
-            }
-
-            h1 {
-                font-size: 2.5rem;
-            }
-
-            .tagline {
-                font-size: 1rem;
-                margin-bottom: 1rem;
-            }
-
-            .hero-section {
-                padding: 1.5rem;
-            }
-
             .cta-buttons {
                 flex-direction: row;
                 flex-wrap: wrap;
@@ -734,341 +754,667 @@
                 padding: 0.8rem 1.5rem;
             }
 
-            .game-features {
+            .features-grid {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 1rem;
             }
         }
     </style>
 </head>
+
 <body>
-<!-- Animierte Partikel -->
-<div class="particles" id="particles"></div>
+<!-- ==================== HINTERGRUND EFFEKTE ==================== -->
+<div class="background-effects">
+    <div class="particles" id="particles"></div>
+    <div class="flame-column flame-column--left"></div>
+    <div class="flame-column flame-column--right"></div>
+</div>
 
-<!-- Flammende Säulen -->
-<div class="flame-column left"></div>
-<div class="flame-column right"></div>
-
+<!-- ==================== HAUPTCONTAINER ==================== -->
 <div class="container">
-    <header>
-        <div class="title-container">
-            <h1>Escape from Tartaros</h1>
-        </div>
-        <p class="tagline">Ein mythologisches Brettspiel voller Prüfungen, Götter und Zeitdruck</p>
-    </header>
+    <!-- ==================== HERO SECTION ==================== -->
+    <section class="hero">
+        <div class="hero__content">
+            <h1 class="hero__title">ESCAPE FROM<br>TARTAROS</h1>
+            <p class="hero__subtitle">Ein mythologisches Brettspiel voller Prüfungen und Zeitdruck</p>
+            <p class="hero__tagline">
+                Entkomme den drei Ebenen der Unterwelt, bestehe Hades' Prüfungen und erkämpfe dir deinen Platz im Paradies Elysion!
+            </p>
 
-    <div class="main-content">
-        <div class="hero-section">
-            <h2>Willkommen in der Unterwelt, Sterblicher!</h2>
-            <p>Die Schatten des Tartaros umfangen dich, kalt und undurchdringlich wie ein Grab. Unter deinen Füßen knirschen die Überreste derer, die vor dir gekommen und gescheitert sind. Doch du... du hast das Glück, dass Hades dich bemerkt hat.</p>
+            <!-- Video Section -->
+            <div class="video-section">
+                <div class="video-container">
+                    <video
+                            id="gameVideo"
+                            class="video-container__video"
+                            controls
+                            preload="metadata"
+                            poster="TrailerThumbnail.jpeg"
+                    >
+                        <source src="EscapeFromTartarusTrailer.mp4" type="video/mp4">
+                        <p>Ihr Browser unterstützt das Video-Element nicht.
+                            <a href="EscapeFromTartarusTrailer.mp4">Video herunterladen</a>
+                        </p>
+                    </video>
+                    <div class="video-container__overlay">
+                        <button class="video-play-btn" id="videoPlayBtn">
+                            <span class="video-play-btn__icon">▶</span>
+                            <span class="video-play-btn__text">Game Trailer ansehen</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
 
-            <p>Der Herr der Toten langweilt sich und gibt dir die Chance, als Gewinner seines Spiels vom Tartaros zu entkommen und die Ewigkeit im Paradies Elysions zu genießen.</p>
-
-            <p>Drei Ebenen der Unterwelt liegen vor dir, jede gefährlicher als die letzte. Wirst du Hades beeindrucken? Wirst du tricksen, kämpfen oder betteln, um deine Freiheit zu erkaufen? Oder wirst du scheitern und für immer in der Dunkelheit verschwinden?</p>
-
-            <p><strong>Die Würfel sind gefallen. Die Spiele beginnen.</strong></p>
-
+            <!-- Call-to-Action Buttons -->
             <div class="cta-buttons">
-                <a href="timer.html" class="btn btn-gold">⚡ Spiel starten</a>
+                <a href="timer.html" class="btn btn--gold">⚡ Spiel starten</a>
                 <button id="rules-btn" class="btn">📜 Spielanleitung</button>
             </div>
         </div>
+    </section>
 
-        <div class="features-section">
-            <h2 class="features-title">Die Herausforderungen der Unterwelt</h2>
-            <div class="game-features">
-                <div class="feature-card">
-                    <div class="feature-icon">⚔️</div>
-                    <h3>Kampfprüfungen</h3>
-                    <p>Beweise deine Stärke gegen die Schatten der Unterwelt. Symbole in der richtigen Reihenfolge legen und göttliche Belohnungen empfangen.</p>
-                </div>
+    <!-- ==================== HAUPTINHALT ==================== -->
+    <main class="main-content">
+        <!-- Features Section -->
+        <section class="features-section">
+            <h2 class="section-title">Das Spiel</h2>
+            <div class="features-grid">
+                <article class="feature-card">
+                    <div class="feature-card__icon">🏛️</div>
+                    <h3 class="feature-card__title">Drei Welten</h3>
+                    <p class="feature-card__text">Kämpfe dich durch Tartaros, Asphodel und Elysion - jede Ebene bringt neue Herausforderungen und Gefahren.</p>
+                </article>
 
-                <div class="feature-card">
-                    <div class="feature-icon">🧩</div>
-                    <h3>Hades' Prüfungen</h3>
-                    <p>Nach jeder Ebene erwartet dich eine einzigartige Prüfung von Hades selbst. Nur die Geschicktesten werden seiner Aufmerksamkeit würdig.</p>
-                </div>
+                <article class="feature-card">
+                    <div class="feature-card__icon">⚡</div>
+                    <h3 class="feature-card__title">Zeitdruck</h3>
+                    <p class="feature-card__text">Jeder Spieler hat nur 1 Minute pro Ebene! Schnelle Entscheidungen sind der Schlüssel zum Überleben.</p>
+                </article>
 
-                <div class="feature-card">
-                    <div class="feature-icon">🏺</div>
-                    <h3>Göttliche Artefakte</h3>
-                    <p>Granatäpfel, Ambrosia, Apollos Pfeil und mächtige Relikte der Olympier stehen dir zur Verfügung - wenn du ihrer würdig bist.</p>
-                </div>
+                <article class="feature-card">
+                    <div class="feature-card__icon">🎲</div>
+                    <h3 class="feature-card__title">Hades' Prüfungen</h3>
+                    <p class="feature-card__text">Acht verschiedene Minispiele testen deine Geschicklichkeit, Strategie und dein Glück zwischen den Ebenen.</p>
+                </article>
 
-                <div class="feature-card">
-                    <div class="feature-icon">⏳</div>
-                    <h3>Charons Zeitdruck</h3>
-                    <p>Die Sanduhr der Unterwelt läuft unaufhörlich! Erreiche rechtzeitig Charons Boot oder leide unter den ewigen Konsequenzen.</p>
-                </div>
+                <article class="feature-card">
+                    <div class="feature-card__icon">🏆</div>
+                    <h3 class="feature-card__title">Strategische Tiefe</h3>
+                    <p class="feature-card__text">Sammle Relikte, kämpfe gegen Monster, entschärfe Fallen und nutze mächtige Artefakte für deinen Sieg.</p>
+                </article>
+
+                <article class="feature-card">
+                    <div class="feature-card__icon">⚔️</div>
+                    <h3 class="feature-card__title">Kämpfe & Duelle</h3>
+                    <p class="feature-card__text">Stelle dich Monstern in strategischen Kämpfen oder fordere andere Spieler zu epischen Duellen heraus.</p>
+                </article>
+
+                <article class="feature-card">
+                    <div class="feature-card__icon">🔮</div>
+                    <h3 class="feature-card__title">Mythologie</h3>
+                    <p class="feature-card__text">Tauche ein in die griechische Mythologie mit authentischen Charakteren, Orten und Geschichten der Unterwelt.</p>
+                </article>
             </div>
-        </div>
-    </div>
+        </section>
+    </main>
 
-    <footer>
-        <p>© 2025 Escape from Tartaros - Ein Spiel der Götter für Sterbliche</p>
-        <p>🔥 Mögen die Olympier euch gnädig sein 🔥</p>
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="footer">
+        <h2 class="footer__title">Die Schöpfer</h2>
+        <p class="footer__creators">Sina Nestlen • Thomas Hofmann • Adrian Kranyak • Emma Ringswald</p>
+        <p class="footer__subtitle">Ein Studententeam mit Leidenschaft für epische Spielerlebnisse</p>
     </footer>
 </div>
 
-<!-- Modal für Spielanleitung -->
+<!-- ==================== MODAL FÜR SPIELANLEITUNG ==================== -->
 <div id="rules-modal" class="modal">
-    <div class="modal-content">
-        <span class="close-modal">&times;</span>
+    <div class="modal__content">
+        <span class="modal__close">&times;</span>
         <h2>🏛️ Spielanleitung: Escape from Tartaros</h2>
 
-        <div class="rules-section">
-            <h3>🌟 Einleitung</h3>
+        <section class="rules-section">
+            <h3 class="rules-section__title">🌟 Einleitung</h3>
             <p>Willkommen im Tartaros, Sterbliche! Die Schatten der Unterwelt umfangen euch, kalt und undurchdringlich wie ein Grab. Unter euren Füßen knirschen die Überreste derer, die vor euch gekommen und gescheitert sind. Doch ihr... ihr habt das Glück, dass Hades euch bemerkt hat. Der Herr der Toten langweilt sich und gibt euch die Chance als Gewinner seines Spiels vom Tartaros auszusteigen und die Ewigkeit im Paradies Elysions zu genießen.</p>
             <p>Drei Ebenen der Unterwelt liegen vor euch, jede gefährlicher als die letzte. Zuerst die finsteren Gründe des Tartaros, wo die Verdammten in ewiger Qual schreien. Dann die öden Aschefelder Asphodels, durch die die Vergessenen irren, ohne Hoffnung auf Erlösung. Und schließlich das Paradies des Elysion, wo die Helden ruhen – wenn ihr es so weit schafft.</p>
-        </div>
+            <p>Doch Hades ist kein fairer Gegner. Nach jeder Ebene stellt er dich auf die Probe, eine Prüfung, nur für euch ersonnen. Er belohnt die Klugen, die Starken, die Skrupellosen – und die anderen? Nun, die Unterwelt hat immer Platz für mehr Schatten.</p>
+            <p>Werdet ihr ihn beeindrucken? Werdet ihr tricksen, kämpfen oder betteln, um eure Freiheit zu erkaufen? Oder werdet ihr scheitern und für immer in der Dunkelheit verschwinden? Die Würfel sind gefallen. Die Spiele beginnen. Seid ihr bereit?</p>
+        </section>
 
-        <div class="rules-section">
-            <h3>📦 Spielinhalt</h3>
-            <ul>
-                <li>3 Spielbrett Ebenen (Tartaros, Asphodel, Elysion)</li>
-                <li>1 Anleitung der Götter</li>
-                <li>4 Spielfiguren</li>
-                <li>8 Minispiel-Boxen (Hades' Prüfungen)</li>
-                <li>258 Karten des Schicksals</li>
-                <li>50 Wände der Verdammnis</li>
-                <li>9 Itemfeld-Plättchen</li>
-                <li>18 Aktionsfeld-Plättchen</li>
-                <li>3 Charons Boote</li>
-                <li>4 Spielhilfen</li>
-            </ul>
-        </div>
+        <section class="rules-section">
+            <h3 class="rules-section__title">🎯 Ziel des Spiels</h3>
+            <p>Die meisten Siegpunkte sammeln, um am Ende in Elysion bleiben zu können und nicht wieder in den Tartaros zurück geschickt zu werden.</p>
+        </section>
 
-        <div class="rules-section">
-            <h3>🎯 Spielvorbereitung</h3>
-            <ul>
-                <li>Spielbrett Ebenen zusammenstecken (Reihenfolge: Rot → Grau → Grün)</li>
-                <li>Spielbrett Schablone ziehen</li>
-                <li>Spielbrettfelder und Wände an die Stellen packen die auf der Schablone zu sehen sind</li>
-                <li>Handkarten verteilen - 3 von jedem Symbol (Kreis, Dreieck, Viereck)</li>
-                <li>Kartenstapel Mischen und an vorgesehene Positionen legen</li>
-                <li>Spielfiguren auf den Start stellen</li>
-            </ul>
-        </div>
-
-        <div class="rules-section">
-            <h3>🏆 Ziel des Spiels</h3>
-            <p>Die meisten Siegpunkte sammeln, um am Ende in Elysion bleiben zu können und nicht wieder in den Tartaros zurück geschickt zu werden. Nur der würdigste Held darf das Paradies betreten!</p>
-        </div>
-
-        <div class="rules-section">
-            <h3>⚡ Spielablauf</h3>
-            <ul>
-                <li>Verdeckt Charakterkarte ziehen</li>
-                <li>Ältester Spieler beginnt mit der ersten Bewegung im Sternschritt</li>
-                <li>Nur ein Spieler darf gleichzeitig auf einem Feld stehen</li>
-                <li>Nach einem Zug wird die Stoppuhr angehalten und die des nächsten Spielers gestartet</li>
-                <li>Auf der ersten Ebene geht es im Uhrzeigersinn Reihum</li>
-                <li>Bei Erreichen eines Ereignis- oder Itemfelds wird eine Karte gezogen und die Aktion ausgeführt</li>
-                <li>Nach einer Minute müssen alle Spieler Charons Schiff erreicht haben (Zeitstrafe bei Verspätung)</li>
-                <li>Auf Charons Schiff: Relikte gegen Charons Münzen eintauschen</li>
-                <li>Minispiel (Hades Prüfung) nach jeder Ebene</li>
-                <li>Nach dem 3. Minispiel Siegpunkte auszählen und Zusatzpunkte verteilen</li>
-            </ul>
-        </div>
-
-        <div class="rules-section">
-            <h3>🗺️ Felder & Karten</h3>
-            <h4>Felder:</h4>
-            <ul>
-                <li><strong>⚔️ Ereignisfeld:</strong> Kampfprüfungen, Arenaprüfungen, Fallen und Relikte</li>
-                <li><strong>🏺 Itemfeld:</strong> Granatapfel, Ambrosia, Apollos Pfeil, Rostiger Schlüssel</li>
-                <li><strong>🗝️ Dungeon:</strong> Mit Rostigem Schlüssel öffnen (nur Ebene 3)</li>
-                <li><strong>🚢 Charons Schiff:</strong> Zwischen den Ebenen, Ort der Minispiele</li>
-                <li><strong>👑 Hades:</strong> Siegpunkteauszählung am Spielende</li>
+        <section class="rules-section">
+            <h3 class="rules-section__title">📦 Spielinhalt</h3>
+            <p><strong>Gesamt: 160 Karten</strong></p>
+            <ul class="rules-section__list">
+                <li class="rules-section__list-item">3 Spielbrett-Ebenen</li>
+                <li class="rules-section__list-item">1 Anleitung</li>
+                <li class="rules-section__list-item">4 Spielfiguren</li>
+                <li class="rules-section__list-item">8 Minispiel-Boxen</li>
+                <li class="rules-section__list-item">50 Wände</li>
+                <li class="rules-section__list-item">9 Itemfeld-Plättchen</li>
+                <li class="rules-section__list-item">18 Aktionsfeld-Plättchen</li>
+                <li class="rules-section__list-item">3 Charons Boote</li>
+                <li class="rules-section__list-item">4 Spielhilfen</li>
             </ul>
 
-            <h4>Karten:</h4>
-            <ul>
-                <li><strong>⚔️ Kampfprüfung:</strong> Symbole in richtiger Reihenfolge legen</li>
-                <li><strong>🥊 Duellprüfung:</strong> Gegen anderen Spieler antreten</li>
-                <li><strong>🕳️ Falle:</strong> Symbole legen oder Wille verlieren</li>
-                <li><strong>💎 Relikte:</strong> Siegpunkte oder Charons Münzen</li>
-                <li><strong>🍎 Items:</strong> Granatapfel (+5 Wille), Ambrosia (+10 Wille), Apollos Pfeil, Rostiger Schlüssel</li>
-                <li><strong>⭐ Artefakte:</strong> Rad der Fortuna, Hermes Schuhe, Schild des Aegis, Kopf der Medusa</li>
+            <h4 class="rules-section__subtitle">Kartenverteilung:</h4>
+            <ul class="rules-section__list">
+                <li class="rules-section__list-item"><strong>Items (40):</strong> Granatapfel (17), Ambrosia (11), Apollos Pfeil (4), Rostiger Schlüssel (1), Bellerophons Speer (4), Harmonias Halskette (3)</li>
+                <li class="rules-section__list-item"><strong>Ereignisse (45):</strong> Kampf (15), Fallen (10), Relikte (6), Arenakampf (10), Arenakampfkarten (4)</li>
+                <li class="rules-section__list-item"><strong>Artefakte (4):</strong> Rad der Fortuna, Talaria, Schild des Aegis, Kopf der Medusa</li>
+                <li class="rules-section__list-item"><strong>Charakterkarten (4):</strong> Für jeden Spieler eine</li>
+                <li class="rules-section__list-item"><strong>Verteidigungskarten (36):</strong> Kreis (12), Dreieck (12), Viereck (12)</li>
+                <li class="rules-section__list-item"><strong>Minispiele (31):</strong> Bilderbluffen (12), Kelch (12), Labyrinth (4), Reihenfolge (3)</li>
             </ul>
-        </div>
+        </section>
 
-        <div class="rules-section">
-            <h3>🏅 Siegpunkte</h3>
-            <p><strong>Erhalten durch:</strong></p>
-            <ul>
-                <li>🎯 Ereignisfelder meistern</li>
-                <li>🗝️ Rostiger Schlüssel Dungeon erkunden</li>
-                <li>🎲 Minispiele gewinnen</li>
-                <li>🌟 Zusatzpunkte für:
-                    <ul>
-                        <li>Die meisten besiegten Gegner</li>
-                        <li>Entschärften Fallen</li>
-                        <li>Die meisten noch übrigen Items</li>
-                    </ul>
-                </li>
+        <section class="rules-section">
+            <h3 class="rules-section__title">🏅 Siegpunkte erhalten durch</h3>
+            <ul class="rules-section__list">
+                <li class="rules-section__list-item">Gewonnene Kampfprüfungen</li>
+                <li class="rules-section__list-item">Dungeons öffnen</li>
+                <li class="rules-section__list-item">Minispiel-Gewinne</li>
+                <li class="rules-section__list-item">Zusatzpunkte am Spielende</li>
             </ul>
-            <p><strong>🏆 Der Spieler mit den meisten Siegpunkten gewinnt und darf in Elysion bleiben. Bei Gleichstand werden alle in den Tartaros verbannt!</strong></p>
-        </div>
+        </section>
+
+        <section class="rules-section">
+            <h3 class="rules-section__title">🎯 Spielvorbereitung</h3>
+            <h4 class="rules-section__subtitle">Spielbrett aufbauen:</h4>
+            <ul class="rules-section__list">
+                <li class="rules-section__list-item">Ebenen zusammenstecken (Reihenfolge: Rot → Grau → Grün)</li>
+                <li class="rules-section__list-item">Spielbrett-Schablone ziehen</li>
+                <li class="rules-section__list-item">Spielbrettfelder und Wände entsprechend der Schablone platzieren</li>
+            </ul>
+
+            <h4 class="rules-section__subtitle">Karten vorbereiten:</h4>
+            <ul class="rules-section__list">
+                <li class="rules-section__list-item">Handkarten verteilen: 3 von jedem Symbol (Kreis, Dreieck, Viereck)</li>
+                <li class="rules-section__list-item">Kartenstapel mischen und an vorgesehene Positionen legen</li>
+            </ul>
+
+            <h4 class="rules-section__subtitle">Spiel starten:</h4>
+            <ul class="rules-section__list">
+                <li class="rules-section__list-item">Charakterkarte verdeckt ziehen</li>
+                <li class="rules-section__list-item">Spielfiguren auf den Start stellen</li>
+            </ul>
+        </section>
+
+        <section class="rules-section">
+            <h3 class="rules-section__title">⚡ Grundlegender Spielablauf</h3>
+            <h4 class="rules-section__subtitle">Rundenablauf:</h4>
+            <ul class="rules-section__list">
+                <li class="rules-section__list-item"><strong>Bewegung:</strong> Im Sternschritt auf beliebiges Feld bewegen</li>
+                <li class="rules-section__list-item"><strong>Feldaktion:</strong> Bei Ereignis-/Itemfeld entsprechende Karte ziehen</li>
+                <li class="rules-section__list-item"><strong>Zusatzfähigkeit:</strong> Vor der Bewegung optional einsetzbar</li>
+                <li class="rules-section__list-item"><strong>Zeitmanagement:</strong> Nach dem Zug Stoppuhr weiterreichen</li>
+            </ul>
+
+            <h4 class="rules-section__subtitle">Ebenen-Struktur:</h4>
+            <ul class="rules-section__list">
+                <li class="rules-section__list-item"><strong>Startbereich:</strong> Mittlere 4 Felder vom Startpunkt erreichbar</li>
+                <li class="rules-section__list-item"><strong>Zeitlimit:</strong> 1 Minute pro Ebene</li>
+                <li class="rules-section__list-item"><strong>Zeitstrafe:</strong> 5 Sekunden weniger bei Verspätung</li>
+                <li class="rules-section__list-item"><strong>Ebenenabschluss:</strong> Charons Schiff erreichen → Minispiel</li>
+                <li class="rules-section__list-item"><strong>Reihenfolge:</strong> Ebene 1 im Uhrzeigersinn, danach nach Schiff-Ankunft</li>
+            </ul>
+
+            <h4 class="rules-section__subtitle">Spielende:</h4>
+            <ul class="rules-section__list">
+                <li class="rules-section__list-item">Nach dem 3. Minispiel werden Siegpunkte ausgezählt</li>
+                <li class="rules-section__list-item"><strong>Zusatzpunkte:</strong> 1 Punkt für meiste besiegte Gegner, entschärfte Fallen, übrige Items</li>
+                <li class="rules-section__list-item"><strong>Gewinner:</strong> Spieler mit den meisten Siegpunkten bleibt in Elysion</li>
+                <li class="rules-section__list-item"><strong>Bei Gleichstand:</strong> Alle werden in den Tartaros verbannt</li>
+            </ul>
+        </section>
+
+        <section class="rules-section">
+            <h3 class="rules-section__title">🗺️ Spielbrett-Felder</h3>
+            <h4 class="rules-section__subtitle">⚔️ Ereignisfeld:</h4>
+            <ul class="rules-section__list">
+                <li class="rules-section__list-item"><strong>Inhalt:</strong> Kampfprüfungen, Arenakämpfe, Fallen, Relikte</li>
+                <li class="rules-section__list-item"><strong>Anzahl:</strong> Ebene 1: 5 | Ebene 2: 7 | Ebene 3: 10</li>
+                <li class="rules-section__list-item"><strong>Effekt:</strong> Positive oder negative Auswirkungen möglich</li>
+            </ul>
+
+            <h4 class="rules-section__subtitle">🏺 Itemfeld:</h4>
+            <ul class="rules-section__list">
+                <li class="rules-section__list-item"><strong>Inhalt:</strong> Granatapfel, Ambrosia, Apollos Pfeil, Rostiger Schlüssel, Bellerophons Speer, Harmonias Halskette</li>
+                <li class="rules-section__list-item"><strong>Anzahl:</strong> Ebene 1: 3 | Ebene 2: 4 | Ebene 3: 6</li>
+                <li class="rules-section__list-item"><strong>Effekt:</strong> Nur positive Auswirkungen</li>
+            </ul>
+
+            <h4 class="rules-section__subtitle">🗝️ Spezialfelder:</h4>
+            <ul class="rules-section__list">
+                <li class="rules-section__list-item"><strong>Dungeon:</strong> Mit Rostigem Schlüssel öffnbar (Ebene 3) → Artefakt</li>
+                <li class="rules-section__list-item"><strong>Charons Schiff:</strong> Relikte eintauschen, Minispiele</li>
+                <li class="rules-section__list-item"><strong>Hades:</strong> Finale Siegpunkt-Auswertung</li>
+            </ul>
+        </section>
+
+        <section class="rules-section">
+            <h3 class="rules-section__title">🃏 Karten-Übersicht</h3>
+            <h4 class="rules-section__subtitle">⚔️ Kampfprüfungen:</h4>
+            <ul class="rules-section__list">
+                <li class="rules-section__list-item"><strong>Normale Kämpfe:</strong> 3 Symbole in korrekter Reihenfolge → 1 Siegpunkt</li>
+                <li class="rules-section__list-item"><strong>Bosskämpfe:</strong> 5 Symbole in korrekter Reihenfolge → 3 Siegpunkte</li>
+                <li class="rules-section__list-item"><strong>Item-Anforderungen:</strong> Ebene 2-3: Granatapfel | Ebene 3: Ambrosia</li>
+                <li class="rules-section__list-item"><strong>Fehlschlag:</strong> Zeitverlust</li>
+            </ul>
+
+            <h4 class="rules-section__subtitle">🥊 Arenakampf:</h4>
+            <ul class="rules-section__list">
+                <li class="rules-section__list-item">Zeit anhalten, Mitspieler als Gegner wählen</li>
+                <li class="rules-section__list-item">Karte vom Arenakampf-Stapel ziehen</li>
+                <li class="rules-section__list-item"><strong>Gewinner:</strong> 2 Siegpunkte | <strong>Verlierer:</strong> 5 Sekunden Strafe</li>
+            </ul>
+
+            <h4 class="rules-section__subtitle">🕳️ Fallen:</h4>
+            <ul class="rules-section__list">
+                <li class="rules-section__list-item">3 Symbole in korrekter Reihenfolge legen</li>
+                <li class="rules-section__list-item"><strong>Fehlschlag:</strong> 5 Sekunden Zeitstrafe</li>
+                <li class="rules-section__list-item">Keine Belohnung bei Erfolg</li>
+            </ul>
+
+            <h4 class="rules-section__subtitle">💎 Relikte:</h4>
+            <ul class="rules-section__list">
+                <li class="rules-section__list-item"><strong>Siegpunkte:</strong> 1. Ebene: 1 SP | 2. Ebene: 3 SP | 3. Ebene: 5 SP</li>
+                <li class="rules-section__list-item"><strong>Nachteile:</strong> 5 Sekunden pro Relikt pro Ebene</li>
+                <li class="rules-section__list-item"><strong>Zusatznutzen:</strong> Einmalige Fähigkeit aktivierbar</li>
+            </ul>
+        </section>
+
+        <section class="rules-section">
+            <h3 class="rules-section__title">🏺 Items & Artefakte</h3>
+            <h4 class="rules-section__subtitle">Items:</h4>
+            <ul class="rules-section__list">
+                <li class="rules-section__list-item"><strong>🍎 Granatapfel:</strong> +5 Sekunden ODER Kampf-Voraussetzung (benötigt für Ebene 2-3)</li>
+                <li class="rules-section__list-item"><strong>🍯 Ambrosia:</strong> +10 Sekunden ODER Kampf-Voraussetzung (benötigt für Ebene 3)</li>
+                <li class="rules-section__list-item"><strong>🏹 Apollos Pfeil:</strong> Führender Spieler verliert 1 Siegpunkt (nur an Charons Schiff nutzbar)</li>
+                <li class="rules-section__list-item"><strong>🗝️ Rostiger Schlüssel:</strong> Öffnet Dungeon (Ebene 3) → Gewährt Zugang zu Artefakt</li>
+                <li class="rules-section__list-item"><strong>🔱 Bellerophons Speer:</strong> Kann Wände einreißen → Neue Wege schaffen</li>
+                <li class="rules-section__list-item"><strong>💎 Harmonias Halskette:</strong> Zerstört 1 Ereignis-/Itemfeld → Strategische Feldmanipulation</li>
+            </ul>
+
+            <h4 class="rules-section__subtitle">Artefakte (durch Minispiel-Gewinn oder Dungeon):</h4>
+            <ul class="rules-section__list">
+                <li class="rules-section__list-item"><strong>🎰 Rad der Fortuna:</strong> 3 Siegpunkte (oder würfeln: doppelt/nichts) - Glücksspiel-Option</li>
+                <li class="rules-section__list-item"><strong>👟 Talaria:</strong> 3 Siegpunkte + 2 Felder in einem Zug</li>
+                <li class="rules-section__list-item"><strong>🛡️ Schild des Aegis:</strong> 3 Siegpunkte + Automatischer Kampf-Sieg</li>
+                <li class="rules-section__list-item"><strong>🐍 Kopf der Medusa:</strong> 3 Siegpunkte + Gegner verliert 10 Sekunden</li>
+            </ul>
+            <p><strong>Hinweis:</strong> Nach Nutzung umdrehen, aber Siegpunkte bleiben</p>
+        </section>
+
+        <section class="rules-section">
+            <h3 class="rules-section__title">🎲 Minispiele (Hades' Prüfungen)</h3>
+            <h4 class="rules-section__subtitle">🎭 Einzelspieler-Wettbewerb:</h4>
+            <ul class="rules-section__list">
+                <li class="rules-section__list-item"><strong>Bilderbluffen:</strong> Jeder beschreibt reihum eine Karte (Wahrheit oder Lüge). 1 Punkt pro überzeugte/unüberzeugte Person</li>
+                <li class="rules-section__list-item"><strong>Kelch (Reaktionsspiel):</strong> 12 Karten im Kreis. Σ=Klatschen, Ω=Boden, Φ=Aufstehen, Ψ=Hände hoch</li>
+                <li class="rules-section__list-item"><strong>Bomben Memory:</strong> Standard Memory mit 2 Bomben pro Spieler. Bomben = 1 Runde aussetzen</li>
+            </ul>
+
+            <h4 class="rules-section__subtitle">🧠 Strategiespiele:</h4>
+            <ul class="rules-section__list">
+                <li class="rules-section__list-item"><strong>Eroberung:</strong> 5x8 Feld, Start in Ecken. Würfel ÷ 2 Bewegung. Felder erobern (3 Runden)</li>
+                <li class="rules-section__list-item"><strong>Labyrinth:</strong> 5x8 Feld mit 2 Bomben pro Spieler. Sternschritt-Bewegung, Bomben = 1 Runde aussetzen</li>
+                <li class="rules-section__list-item"><strong>Teamwork:</strong> Symbolreihenfolge ohne Kommunikation (15 Sek, 3 Versuche). Erfolg: +2 SP alle | Misserfolg: -3 SP alle</li>
+            </ul>
+            <p><strong>Gewinn:</strong> Meiste Punkte/Erste am Ziel → Artefakt</p>
+        </section>
+
+        <section class="rules-section">
+            <h3 class="rules-section__title">⏱️ Zusatzregeln</h3>
+            <h4 class="rules-section__subtitle">Zeitmanagement:</h4>
+            <ul class="rules-section__list">
+                <li class="rules-section__list-item">Jeder Spieler hat eine individuelle Stoppuhr</li>
+                <li class="rules-section__list-item">Relikte kosten 5 Sekunden pro Ebene</li>
+                <li class="rules-section__list-item">Zeitstrafen durch Fallen, Bomben, etc.</li>
+                <li class="rules-section__list-item">Verspätung am Ebenenende = 5 Sekunden weniger nächste Ebene</li>
+            </ul>
+
+            <h4 class="rules-section__subtitle">Positionierung:</h4>
+            <ul class="rules-section__list">
+                <li class="rules-section__list-item">Nur ein Spieler pro Feld</li>
+                <li class="rules-section__list-item">Sternschritt-Bewegung</li>
+                <li class="rules-section__list-item">Wände können mit Bellerophons Speer zerstört werden</li>
+            </ul>
+
+            <h4 class="rules-section__subtitle">Spieler-Interaktion:</h4>
+            <ul class="rules-section__list">
+                <li class="rules-section__list-item"><strong>Arenakämpfe:</strong> Direkter PvP-Kampf</li>
+                <li class="rules-section__list-item"><strong>Apollos Pfeil:</strong> Führenden Spieler schwächen</li>
+                <li class="rules-section__list-item"><strong>Harmonias Halskette:</strong> Felder manipulieren</li>
+            </ul>
+        </section>
     </div>
 </div>
 
+<!-- ==================== JAVASCRIPT ==================== -->
 <script>
-    // Partikel Animation
-    function createParticles() {
-        const particlesContainer = document.getElementById('particles');
-        const particleCount = 50;
+    // ==================== KONFIGURATION ====================
+    const CONFIG = {
+        particles: {
+            count: 50,
+            animationDuration: { min: 4, max: 8 }
+        },
+        animations: {
+            fadeInDuration: 0.8,
+            fadeInOffset: 30
+        }
+    };
 
-        for (let i = 0; i < particleCount; i++) {
+    // ==================== PARTIKEL SYSTEM ====================
+    class ParticleSystem {
+        constructor(containerId, config) {
+            this.container = document.getElementById(containerId);
+            this.config = config;
+        }
+
+        createParticles() {
+            if (!this.container) return;
+
+            for (let i = 0; i < this.config.count; i++) {
+                const particle = this.createSingleParticle();
+                this.container.appendChild(particle);
+            }
+        }
+
+        createSingleParticle() {
             const particle = document.createElement('div');
             particle.className = 'particle';
+
+            // Zufällige Position
             particle.style.left = Math.random() * 100 + '%';
             particle.style.top = Math.random() * 100 + '%';
+
+            // Zufällige Animation
             particle.style.animationDelay = Math.random() * 6 + 's';
-            particle.style.animationDuration = (Math.random() * 4 + 4) + 's';
-            particlesContainer.appendChild(particle);
+            const duration = Math.random() *
+                (this.config.animationDuration.max - this.config.animationDuration.min) +
+                this.config.animationDuration.min;
+            particle.style.animationDuration = duration + 's';
+
+            return particle;
         }
     }
 
-    // Modal Funktionalität
-    const modal = document.getElementById("rules-modal");
-    const btn = document.getElementById("rules-btn");
-    const span = document.getElementsByClassName("close-modal")[0];
-
-    btn.onclick = function() {
-        modal.style.display = "block";
-        document.body.style.overflow = "hidden";
-    }
-
-    span.onclick = function() {
-        modal.style.display = "none";
-        document.body.style.overflow = "auto";
-    }
-
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-            document.body.style.overflow = "auto";
+    // ==================== MODAL MANAGER ====================
+    class ModalManager {
+        constructor(modalId, triggerId, closeClass) {
+            this.modal = document.getElementById(modalId);
+            this.trigger = document.getElementById(triggerId);
+            this.closeBtn = document.querySelector('.' + closeClass);
+            this.init();
         }
-    }
 
-    // Smooth Scroll für bessere UX
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            document.querySelector(this.getAttribute('href')).scrollIntoView({
-                behavior: 'smooth'
+        init() {
+            if (!this.modal || !this.trigger || !this.closeBtn) {
+                console.error('Modal elements not found');
+                return;
+            }
+
+            this.trigger.onclick = () => this.open();
+            this.closeBtn.onclick = () => this.close();
+
+            window.onclick = (event) => {
+                if (event.target === this.modal) this.close();
+            };
+
+            // Tastatur Navigation
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && this.isOpen()) this.close();
             });
-        });
-    });
+        }
 
-    // Parallax Effekt für Hintergrund
-    window.addEventListener('scroll', () => {
-        const scrolled = window.pageYOffset;
-        const parallax = document.querySelector('body');
-        const speed = scrolled * 0.5;
-        parallax.style.backgroundPosition = `center ${speed}px`;
-    });
+        open() {
+            this.modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
 
-    // 3D Hover Effekt für Feature Cards
-    document.querySelectorAll('.feature-card').forEach(card => {
-        card.addEventListener('mousemove', (e) => {
+        close() {
+            this.modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        isOpen() {
+            return this.modal.style.display === 'block';
+        }
+    }
+
+    // ==================== ANIMATION MANAGER ====================
+    class AnimationManager {
+        constructor(config) {
+            this.config = config;
+            this.observer = null;
+        }
+
+        initFadeInObserver() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            this.observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        this.animateElementIn(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            // Elemente für Fade-in Animation vorbereiten
+            const elementsToAnimate = [
+                '.feature-card',
+                '.section-title'
+            ];
+
+            elementsToAnimate.forEach(selector => {
+                document.querySelectorAll(selector).forEach(el => {
+                    this.prepareElementForAnimation(el);
+                    this.observer.observe(el);
+                });
+            });
+        }
+
+        prepareElementForAnimation(element) {
+            element.style.opacity = '0';
+            element.style.transform = `translateY(${this.config.fadeInOffset}px)`;
+            element.style.transition = `opacity ${this.config.fadeInDuration}s ease, transform ${this.config.fadeInDuration}s ease`;
+        }
+
+        animateElementIn(element) {
+            element.style.opacity = '1';
+            element.style.transform = 'translateY(0)';
+        }
+    }
+
+    // ==================== INTERAKTIONS MANAGER ====================
+    class InteractionManager {
+        initButtonEffects() {
+            document.querySelectorAll('.btn').forEach(button => {
+                button.addEventListener('click', (e) => this.createRippleEffect(e, button));
+            });
+        }
+
+        createRippleEffect(event, button) {
+            const ripple = document.createElement('span');
+            const rect = button.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            const x = event.clientX - rect.left - size / 2;
+            const y = event.clientY - rect.top - size / 2;
+
+            Object.assign(ripple.style, {
+                width: size + 'px',
+                height: size + 'px',
+                left: x + 'px',
+                top: y + 'px',
+                position: 'absolute',
+                borderRadius: '50%',
+                background: 'rgba(255, 255, 255, 0.3)',
+                transform: 'scale(0)',
+                animation: 'ripple 0.6s linear',
+                pointerEvents: 'none'
+            });
+
+            button.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 600);
+        }
+
+        init3DCardEffects() {
+            document.querySelectorAll('.feature-card').forEach(card => {
+                card.addEventListener('mousemove', (e) => this.handle3DCardMove(e, card));
+                card.addEventListener('mouseleave', () => this.reset3DCard(card));
+            });
+        }
+
+        handle3DCardMove(event, card) {
             const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
             const centerX = rect.width / 2;
             const centerY = rect.height / 2;
             const rotateX = (y - centerY) / 10;
             const rotateY = (centerX - x) / 10;
 
             card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-10px) scale(1.02)`;
-        });
-
-        card.addEventListener('mouseleave', () => {
-            card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0) scale(1)';
-        });
-    });
-
-    // Tastatur Navigation für Modal
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && modal.style.display === 'block') {
-            modal.style.display = 'none';
-            document.body.style.overflow = 'auto';
         }
-    });
 
-    // Initialisierung
-    document.addEventListener('DOMContentLoaded', function() {
-        createParticles();
+        reset3DCard(card) {
+            card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0) scale(1)';
+        }
 
-        // Fade-in Animation für Inhalte
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
+        initParallaxEffect() {
+            window.addEventListener('scroll', () => {
+                const scrolled = window.pageYOffset;
+                const parallax = document.querySelector('body');
+                const speed = scrolled * 0.5;
+                parallax.style.backgroundPosition = `center ${speed}px`;
             });
-        }, observerOptions);
+        }
 
-        // Fade-in für alle wichtigen Elemente
-        document.querySelectorAll('.hero-section, .feature-card, .features-title').forEach(el => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(30px)';
-            el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-            observer.observe(el);
-        });
-    });
+        initSmoothScroll() {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+        }
+    }
 
-    // Button Click Effekte
-    document.querySelectorAll('.btn').forEach(button => {
-        button.addEventListener('click', function(e) {
-            // Ripple Effekt
-            const ripple = document.createElement('span');
-            const rect = this.getBoundingClientRect();
-            const size = Math.max(rect.width, rect.height);
-            const x = e.clientX - rect.left - size / 2;
-            const y = e.clientY - rect.top - size / 2;
+    // ==================== VIDEO MANAGER ====================
+    class VideoManager {
+        constructor(videoId, playBtnId, overlayClass) {
+            this.video = document.getElementById(videoId);
+            this.playBtn = document.getElementById(playBtnId);
+            this.overlay = document.querySelector('.' + overlayClass);
+            this.init();
+        }
 
-            ripple.style.width = ripple.style.height = size + 'px';
-            ripple.style.left = x + 'px';
-            ripple.style.top = y + 'px';
-            ripple.style.position = 'absolute';
-            ripple.style.borderRadius = '50%';
-            ripple.style.background = 'rgba(255, 255, 255, 0.3)';
-            ripple.style.transform = 'scale(0)';
-            ripple.style.animation = 'ripple 0.6s linear';
-            ripple.style.pointerEvents = 'none';
+        init() {
+            if (this.playBtn && this.video && this.overlay) {
+                // Set initial volume to 50%
+                this.video.volume = 0.5;
 
-            this.appendChild(ripple);
-
-            setTimeout(() => {
-                ripple.remove();
-            }, 600);
-        });
-    });
-
-    // CSS für Ripple Animation
-    const style = document.createElement('style');
-    style.textContent = `
-            @keyframes ripple {
-                to {
-                    transform: scale(4);
-                    opacity: 0;
-                }
+                this.playBtn.addEventListener('click', () => this.toggleVideo());
+                this.video.addEventListener('click', () => this.toggleVideo());
+                this.video.addEventListener('ended', () => this.onVideoEnd());
+                this.video.addEventListener('pause', () => this.onVideoPause());
+                this.video.addEventListener('play', () => this.onVideoPlay());
             }
-            
-            .btn {
-                position: relative;
-                overflow: hidden;
+        }
+
+        toggleVideo() {
+            if (this.video.paused) {
+                this.playVideo();
+            } else {
+                this.pauseVideo();
             }
-        `;
-    document.head.appendChild(style);
+        }
+
+        playVideo() {
+            this.video.play();
+            this.hideOverlay();
+        }
+
+        pauseVideo() {
+            this.video.pause();
+            this.showOverlay();
+        }
+
+        onVideoEnd() {
+            this.showOverlay();
+            this.updatePlayButton('▶', 'Trailer erneut ansehen');
+        }
+
+        onVideoPause() {
+            this.showOverlay();
+            this.updatePlayButton('▶', 'Trailer fortsetzen');
+        }
+
+        onVideoPlay() {
+            this.hideOverlay();
+        }
+
+        hideOverlay() {
+            this.overlay.classList.add('video-container__overlay--hidden');
+        }
+
+        showOverlay() {
+            this.overlay.classList.remove('video-container__overlay--hidden');
+        }
+
+        updatePlayButton(icon, text) {
+            const playIcon = this.playBtn.querySelector('.video-play-btn__icon');
+            const playText = this.playBtn.querySelector('.video-play-btn__text');
+            if (playIcon) playIcon.textContent = icon;
+            if (playText) playText.textContent = text;
+        }
+    }
+
+    // ==================== HAUPT APPLIKATION ====================
+    class TartarosApp {
+        constructor() {
+            this.particleSystem = new ParticleSystem('particles', CONFIG.particles);
+            this.modalManager = new ModalManager('rules-modal', 'rules-btn', 'modal__close');
+            this.animationManager = new AnimationManager(CONFIG.animations);
+            this.interactionManager = new InteractionManager();
+            this.videoManager = new VideoManager('gameVideo', 'videoPlayBtn', 'video-container__overlay');
+        }
+
+        init() {
+            // Warten bis DOM geladen ist
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', () => this.start());
+            } else {
+                this.start();
+            }
+        }
+
+        start() {
+            // Alle Systeme initialisieren
+            this.particleSystem.createParticles();
+            this.animationManager.initFadeInObserver();
+            this.interactionManager.initButtonEffects();
+            this.interactionManager.init3DCardEffects();
+            this.interactionManager.initParallaxEffect();
+            this.interactionManager.initSmoothScroll();
+
+            console.log('🔥 Escape from Tartaros initialisiert! Die Spiele können beginnen...');
+        }
+    }
+
+    // ==================== APP STARTEN ====================
+    const app = new TartarosApp();
+    app.init();
 </script>
 </body>
 </html>
